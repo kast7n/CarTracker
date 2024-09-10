@@ -1,0 +1,46 @@
+﻿@model List<Vehicle>
+@section title {
+    <h3>Vehicles</h3>
+}
+
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Plate Number</th>
+                <th scope="col">Seats</th>
+                <th scope="col">Color</th>
+                <th scope="col">Manufacturer</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicle in Model)
+            {
+                <tr>
+                    <td>@vehicle.VehicleModel</td>
+                    <td>@vehicle.PlateNumber</td>
+                    <td>@vehicle.NumberOfSeats</td>
+                    <td>@vehicle.Color</td>
+                    <td>@vehicle.Manufacturer</td>
+                    <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="edit" asp-route-id="@vehicle.VehicleId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="delete" asp-route-vehicleid="@vehicle.VehicleId" onclick="return confirmDelete()">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<a class="btn btn-primary" asp-controller="vehicles" asp-action="add">Add</a>
+
+@section Scripts {
+    <script>
+        function confirmDelete(){
+            return confirm("Are you sure you want to delete this vehicle?")
+        }
+    </script>
+}
+
