@@ -2,7 +2,7 @@
 {
     public class DriversRepository
     {
-        private static List<Driver> _Drivers = new List<Driver>()
+        private static List<Driver> _drivers = new List<Driver>()
         {
                    new Driver
                 {
@@ -33,27 +33,27 @@
 
         public static void AddDriver(Driver driver)
         {
-            if (_Drivers != null && _Drivers.Count > 0)
+            if (_drivers != null && _drivers.Count > 0)
             {
-                var maxId = _Drivers.Max(x => x.DriverId);
+                var maxId = _drivers.Max(x => x.DriverId);
                 driver.DriverId = maxId + 1;
             }
             else
             {
                 driver.DriverId = 1;
             }
-            if (_Drivers == null)
+            if (_drivers == null)
             {
-                _Drivers = new List<Driver>();
+                _drivers = new List<Driver>();
             }
-            _Drivers.Add(driver);
+            _drivers.Add(driver);
         }
 
-        public static List<Driver> GetDriver() => _Drivers;
+        public static List<Driver> GetDrivers() => _drivers;
 
-        public static Driver? GetDriverById(int DriverId)
+        public static Driver? GetDriverById(int driverId)
         {
-            var driver = _Drivers.FirstOrDefault(x => x.DriverId == DriverId);
+            var driver = _drivers.FirstOrDefault(x => x.DriverId == driverId);
             if (driver != null)
             {
                 return new Driver
@@ -71,7 +71,7 @@
 
         public static List<Driver> GetDriversHistoryByVehicleId(int vehicleId)
         {
-            var driver = _Drivers.Where(x => x.VehicleId == vehicleId);
+            var driver = _drivers.Where(x => x.VehicleId == vehicleId);
             if (driver != null)
             {
                 return driver.ToList();
@@ -86,7 +86,7 @@
         public static void UpdateDriver(int DriverId, Driver driver)
         {
             if (DriverId != driver.DriverId) return;
-            var DriverToUpdate = _Drivers.FirstOrDefault(x => x.DriverId == DriverId);
+            var DriverToUpdate = _drivers.FirstOrDefault(x => x.DriverId == DriverId);
             if (DriverToUpdate != null)
             {
                 DriverToUpdate.DriverName = driver.DriverName;
@@ -97,10 +97,10 @@
 
         public static void DeleteDriver(int DriverId)
         {
-            var driver = _Drivers.FirstOrDefault(x => x.DriverId == DriverId);
+            var driver = _drivers.FirstOrDefault(x => x.DriverId == DriverId);
             if (driver != null)
             {
-                _Drivers.Remove(driver);
+                _drivers.Remove(driver);
             }
         }
     }

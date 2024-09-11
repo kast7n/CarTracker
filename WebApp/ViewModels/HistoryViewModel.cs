@@ -7,10 +7,5 @@ namespace WebApp.ViewModels
         public int SelectedVehicleId { get; set; }
         public IEnumerable<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
-
-        public int getSelectedVehicleId()
-        {
-            return (int)SelectedVehicleId;
-        }
     }
 }

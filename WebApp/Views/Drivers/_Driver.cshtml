@@ -1,0 +1,57 @@
+﻿@model Driver
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="drivers" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+        <input type="hidden" asp-for="DriverId" />
+        <input type="hidden" asp-for="VehicleId" />
+        <input type="hidden" asp-for="Vehicle" />
+    }
+
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="DriverName" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="DriverName" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="DriverName"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="StartDate" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="date" asp-for="StartDate" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="EndDate" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="date" asp-for="EndDate" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+        <div class="col-6">
+        </div>
+    </div>
+
+</form>

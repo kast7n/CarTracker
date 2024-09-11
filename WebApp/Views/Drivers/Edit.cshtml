@@ -1,0 +1,13 @@
+﻿@model Driver
+
+@section title {
+    @if (Model != null)
+    {
+        <h3>Driver: @Model.DriverName for @Model.Vehicle?.VehicleModel</h3>
+    }
+
+}
+@if (Model != null)
+{
+    <partial name="_Driver" model="@Model" />
+}
