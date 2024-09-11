@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Maintenance>
+@if (Model != null && Model.Count() > 0)
+{ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Maintenance Type</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hist in Model)
+        {
+            <tr>
+                <td>@hist.MaintenanceType</td>
+                <td>@hist.MaintenanceDate.ToString("dd/MM/yy")</td>
+                <td>@hist.Description</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+}

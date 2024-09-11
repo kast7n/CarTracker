@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Driver>
+@if (Model != null && Model.Count() > 0)
+{ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hist in Model)
+        {
+            <tr>
+                    <td>@hist.DriverName</td>
+                    <td>@hist.StartDate.ToString("dd/MM/yy")</td>
+                    <td>
+                        @if (hist.EndDate.HasValue)
+                        {
+                            @hist.EndDate.Value.ToString("dd/MM/yy")
+                        }
+                        else
+                        {
+                            @Html.Raw("Current")
+                        }
+                    </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+}

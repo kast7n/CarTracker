@@ -1,0 +1,118 @@
+﻿@using WebApp.ViewModels
+@model HistoryViewModel
+
+@section title {
+    <div class="row">
+        <div class="col-7"><h3>Vehicle's Histroy</h3></div>
+    </div>
+}
+<br />
+
+<div class="row">
+
+    <div class="col-4">
+        <div class="text-danger" asp-validation-summary="All"></div>
+        <select id="SelectedVehicleId" asp-for="SelectedVehicleId" class="form-control">
+            <option>- Please Select -</option>
+            @if (Model.Vehicles != null && Model.Vehicles.Count() > 0)
+            {
+                @foreach (var vehicle in Model.Vehicles)
+                {
+                    <option value="@vehicle.VehicleId">@vehicle.PlateNumber @vehicle.VehicleModel</option>
+                }
+            }
+        </select>
+
+        <br />
+
+        <div id="historyCategoriesPartial">
+            @* History Categories List *@
+
+            <table id="historyCategoriesTable" class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>History Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="historyCategoryRow" category-id="Maintenance">
+                        <td>Maintenance History</td>
+                    </tr>
+                    <tr class="historyCategoryRow" category-id="Driver">
+                        <td>Drivers History</td>
+                    <tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+
+        <div id="historyDetailsPartial">
+
+        </div>
+
+
+    </div>
+
+    <div class="col" id="HistoryTable" >
+        @* List of transactions *@
+        <p id="vehicleId"></p>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            // Load the products if category alr selected
+            var selectedVehicleId = $("#SelectedVehicleId").val();
+            
+        
+
+            //Handles category selection
+            $("#SelectedVehicleId").on("change", function () {
+
+                selectedVehicleId = $(this).val();
+                $(".historyCategoryRow").removeClass('highlight');
+                $("#HistoryTable").hide();
+    
+            })
+
+            //Handles product selection
+            $("#historyCategoriesPartial").on("click", ".historyCategoryRow", function () {
+                //Highlighting the selected row
+                    $(".historyCategoryRow").removeClass('highlight');
+                    $(this).addClass('highlight');
+                    var historyCatId = $(this).attr('category-id');
+                if (historyCatId == "Maintenance") {
+                    loadMaintenanceHistory(selectedVehicleId)
+                } else if (historyCatId == "Driver") {
+                    loadDriversHistory(selectedVehicleId)
+                }
+
+     
+            });
+
+        });
+
+        function loadMaintenanceHistory(vehicleId) {
+            console.log(vehicleId);
+            $("#HistoryTable").show();
+            $("#HistoryTable").load("/History/MaintenanceHistorybyVehiclePartial", { vehicleId: vehicleId });
+           
+        }
+
+        function loadDriversHistory(vehicleId) {
+            console.log(vehicleId);
+            $("#HistoryTable").show();
+            $("#HistoryTable").load("/History/DriversHistoryByVehiclePartial", { vehicleId: vehicleId });
+
+        }
+
+
+
+
+    </script>
+}

@@ -2,9 +2,9 @@
 
 namespace WebApp.Models
 {
-    public class MaintenanceHistory
+    public class Maintenance
     {
-        public int MaintenanceHistoryId { get; set; }
+        public int MaintenanceId { get; set; }
         [Required]
         [Display(Name = "Vehicle")]
         public int VehicleId { get; set; }

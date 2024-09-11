@@ -4,7 +4,7 @@ namespace WebApp.Models
 {
     public class Driver
     {
-        public int DriverHistoryId { get; set; }
+        public int DriverId { get; set; }
         [Required]
         [Display(Name = "Vehicle")]
         public int VehicleId { get; set; }
