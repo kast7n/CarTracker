@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Driver>
+﻿@model IEnumerable<VehicleDriver>
 @if (Model != null && Model.Count() > 0)
 { 
 <table class="table">
@@ -12,23 +12,23 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var hist in Model)
+        @foreach (var vehicleDriver in Model)
         {
             <tr>
-                    <td>@hist.DriverName</td>
-                    <td>@hist.StartDate.ToString("dd/MM/yy")</td>
+                    <td>@vehicleDriver.Driver?.Name</td>
+                    <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
                     <td>
-                        @if (hist.EndDate.HasValue)
+                        @if (vehicleDriver.EndDate.HasValue)
                         {
-                            @hist.EndDate.Value.ToString("dd/MM/yy")
+                            @vehicleDriver.EndDate.Value.ToString("dd/MM/yy")
                         }
                         else
                         {
                             @Html.Raw("Current owner")
                         }
                     </td>
-                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="edit" asp-route-id="@hist.DriverId">Edit</a></td>
-                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="delete" asp-route-id="@hist.DriverId" onclick="return confirmDelete()">Delete</a></td>
+                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="edit" asp-route-id="@vehicleDriver.DriverId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="delete" asp-route-id="@vehicleDriver.DriverId" onclick="return confirmDelete()">Delete</a></td>
 
                 </tr>
         }

@@ -5,20 +5,14 @@ namespace WebApp.Models
     public class Driver
     {
         public int DriverId { get; set; }
-        [Required]
-        [Display(Name = "Vehicle")]
-        public int VehicleId { get; set; }
-        [Required]
-        [Display(Name = "Driver Name")]
-        public string? DriverName { get; set; }
 
         [Required]
-        [Display(Name = "Start Date")]
-        public DateTime StartDate { get; set; }
+        public string? Name { get; set; }
 
-        [Display(Name = "End Date")]
-        public DateTime? EndDate { get; set; }
+        [Required]
+        [Display(Name = "License Number")]
+        public string? LicenseNumber { get; set; }
 
-        public Vehicle? Vehicle { get; set; }
+        public List<VehicleDriver>? VehicleDrivers { get; set; }
     }
 }

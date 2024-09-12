@@ -1,52 +1,32 @@
-﻿namespace WebApp.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace WebApp.Models
 {
-    public class DriversRepository
+    public static class DriversRepository
     {
-        private static List<Driver> _drivers = new List<Driver>()
+        private static List<Driver> _drivers = new List<Driver>();
+
+        static DriversRepository()
         {
-                   new Driver
+            _drivers.AddRange(new[]
+            {
+                new Driver
                 {
                     DriverId = 1,
-                    VehicleId = 1,
-                    DriverName = "John Doe",
-                    StartDate = new DateTime(2023, 1, 15),
-                    EndDate = new DateTime(2023, 6, 15)
+                    Name = "Alice Johnson",
+                    LicenseNumber = "D1234567",
+
                 },
                 new Driver
                 {
                     DriverId = 2,
-                    VehicleId = 1,
-                    DriverName = "Jane Smith",
-                    StartDate = new DateTime(2023, 6, 16),
-                    EndDate = null // Current driver
-                },
-                new Driver
-                {
-                    DriverId = 3,
-                    VehicleId = 2,
-                    DriverName = "Bob Johnson",
-                    StartDate = new DateTime(2023, 3, 20),
-                    EndDate = new DateTime(2023, 9, 20)
+                    Name = "Bob Smith",
+                    LicenseNumber = "D7654321",
+
                 }
-        };
-
-
-        public static void AddDriver(Driver driver)
-        {
-            if (_drivers != null && _drivers.Count > 0)
-            {
-                var maxId = _drivers.Max(x => x.DriverId);
-                driver.DriverId = maxId + 1;
-            }
-            else
-            {
-                driver.DriverId = 1;
-            }
-            if (_drivers == null)
-            {
-                _drivers = new List<Driver>();
-            }
-            _drivers.Add(driver);
+            });
         }
 
         public static List<Driver> GetDrivers() => _drivers;
@@ -56,51 +36,43 @@
             var driver = _drivers.FirstOrDefault(x => x.DriverId == driverId);
             if (driver != null)
             {
-                return new Driver
-                {
-                    DriverId = driver.DriverId,
-                    StartDate = driver.StartDate,
-                    EndDate = driver.EndDate,
-                    DriverName = driver.DriverName,
-                    VehicleId = driver.VehicleId,
-                    Vehicle = driver.Vehicle
-                };
+                driver.VehicleDrivers = VehicleDriverRepository.GetVehicleDrivers().Where(vd => vd.DriverId == driverId).ToList();
+                return driver;
             }
             return null;
         }
 
-        public static List<Driver> GetDriversHistoryByVehicleId(int vehicleId)
+        public static void AddDriver(Driver driver)
         {
-            var driver = _drivers.Where(x => x.VehicleId == vehicleId);
-            if (driver != null)
+            if (driver.DriverId == 0)
             {
-                return driver.ToList();
+                driver.DriverId = _drivers.Any() ? _drivers.Max(x => x.DriverId) + 1 : 1;
             }
-            else
+
+            // Retrieve and set vehicle drivers for the new driver
+            driver.VehicleDrivers = VehicleDriverRepository.GetVehicleDrivers().Where(vd => vd.DriverId == driver.DriverId).ToList();
+
+            _drivers.Add(driver);
+        }
+
+        public static void UpdateDriver(int driverId, Driver updatedDriver)
+        {
+            var driverToUpdate = _drivers.FirstOrDefault(x => x.DriverId == driverId);
+            if (driverToUpdate != null)
             {
-                return new List<Driver>();
+                driverToUpdate.Name = updatedDriver.Name;
+                driverToUpdate.LicenseNumber = updatedDriver.LicenseNumber;
+
             }
         }
 
-
-        public static void UpdateDriver(int DriverId, Driver driver)
+        public static void DeleteDriver(int driverId)
         {
-            if (DriverId != driver.DriverId) return;
-            var DriverToUpdate = _drivers.FirstOrDefault(x => x.DriverId == DriverId);
-            if (DriverToUpdate != null)
-            {
-                DriverToUpdate.DriverName = driver.DriverName;
-                DriverToUpdate.StartDate = driver.StartDate;
-                DriverToUpdate.EndDate = driver.EndDate;
-            }
-        }
-
-        public static void DeleteDriver(int DriverId)
-        {
-            var driver = _drivers.FirstOrDefault(x => x.DriverId == DriverId);
+            var driver = _drivers.FirstOrDefault(x => x.DriverId == driverId);
             if (driver != null)
             {
                 _drivers.Remove(driver);
+          
             }
         }
     }

@@ -26,21 +26,17 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 DriversRepository.UpdateDriver(driver.DriverId, driver);
-                return RedirectToAction(nameof(Index),"History");
+                return RedirectToAction(nameof(Index));
             }
 
             return View(driver);
         }
 
         [HttpGet]
-        public IActionResult Add(int id) // VehicleId passed so user doesn't select a vehicle in the form, vehicle is selected when he chooses which vehicle to add the driver to
+        public IActionResult Add() // VehicleId passed so user doesn't select a vehicle in the form, vehicle is selected when he chooses which vehicle to add the driver to
         {
-            ViewBag.Action = "add";
-            var driver = new Driver
-            {
-                VehicleId = id
-            };
-            return View(driver);
+            ViewBag.Action = "add";    
+            return View();
         }
         [HttpPost]
         public IActionResult Add(Driver driver)
@@ -48,9 +44,8 @@ namespace WebApp.Controllers
             
             if (ModelState.IsValid)
             {
-                driver.Vehicle = VehiclesRepository.GetVehicleById(driver.VehicleId);
                 DriversRepository.AddDriver(driver);
-                return RedirectToAction(nameof(Index), "History");
+                return RedirectToAction(nameof(Index));
             }
 
             return View(driver);
@@ -59,7 +54,7 @@ namespace WebApp.Controllers
         public IActionResult Delete(int id)
         {
             DriversRepository.DeleteDriver(id);
-            return RedirectToAction(nameof(Index), "History");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

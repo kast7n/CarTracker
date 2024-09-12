@@ -1,76 +1,118 @@
-﻿namespace WebApp.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace WebApp.Models
 {
-    public class VehiclesRepository
+    public static class VehiclesRepository
     {
-        private static List<Vehicle> _vehicles = new List<Vehicle>()
-        {
-            new Vehicle {     VehicleId = 1,     VehicleModel = "Model S",     PlateNumber = "ABC123",     NumberOfSeats = 5,     Color = "Red",     Manufacturer = "Tesla" },
-            new Vehicle {     VehicleId = 2,     VehicleModel = "Accord",     PlateNumber = "XYZ456",     NumberOfSeats = 4,     Color = "Blue",     Manufacturer = "Honda" },
-            new Vehicle {     VehicleId = 3,     VehicleModel = "F-150",     PlateNumber = "LMN789",     NumberOfSeats = 6,     Color = "Black",     Manufacturer = "Ford" }
-        };
+        private static List<Vehicle> _vehicles = new List<Vehicle>();
 
-
-        public static void AddVehicle(Vehicle vehicle)
+        static VehiclesRepository()
         {
-            if (_vehicles != null && _vehicles.Count > 0)
+            // Initialize with some vehicles for demonstration
+            var tesla = VehicleManufacturerRepository.GetManufacturerById(1);
+            var honda = VehicleManufacturerRepository.GetManufacturerById(2);
+            var ford = VehicleManufacturerRepository.GetManufacturerById(3);
+
+            _vehicles.AddRange(new[]
             {
-                var maxId = _vehicles.Max(x => x.VehicleId);
-                vehicle.VehicleId = maxId + 1;
-            }
-            else
+                new Vehicle { VehicleId = 1, VehicleModel = "Model S", PlateNumber = "ABC123", NumberOfSeats = 5, Color = "Red", Manufacturer = tesla },
+                new Vehicle { VehicleId = 2, VehicleModel = "Accord", PlateNumber = "XYZ456", NumberOfSeats = 4, Color = "Blue", Manufacturer = honda },
+                new Vehicle { VehicleId = 3, VehicleModel = "F-150", PlateNumber = "LMN789", NumberOfSeats = 6, Color = "Black", Manufacturer = ford }
+            });
+
+            // Assign vehicles to manufacturers
+            foreach (var manufacturer in VehicleManufacturerRepository.GetManufacturers())
             {
-                vehicle.VehicleId = 1;
+                manufacturer.Vehicles = _vehicles.Where(v => v.Manufacturer?.ManufacturerId == manufacturer.ManufacturerId).ToList();
             }
-            if (_vehicles == null)
-            {
-                _vehicles = new List<Vehicle>();
-            }
-            _vehicles.Add(vehicle);
         }
 
         public static List<Vehicle> GetVehicles() => _vehicles;
 
         public static Vehicle? GetVehicleById(int vehicleId)
         {
-            var vehicle = _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
-            if(vehicle != null)
-            {
-                return new Vehicle
-                {
-                    VehicleId = vehicle.VehicleId,
-                    VehicleModel = vehicle.VehicleModel,
-                    PlateNumber = vehicle.PlateNumber,
-                    Color = vehicle.Color,
-                    Manufacturer = vehicle.Manufacturer,
-                    NumberOfSeats = vehicle.NumberOfSeats
-                };
-            }
-            return null;
+            return _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
         }
 
-
-        public static void UpdateVehicle(int vehicleId, Vehicle vehicle)
+        public static void AddVehicle(Vehicle vehicle)
         {
-            if (vehicleId != vehicle.VehicleId) return;
+            if (vehicle.VehicleId == 0)
+            {
+                vehicle.VehicleId = _vehicles.Any() ? _vehicles.Max(x => x.VehicleId) + 1 : 1;
+            }
+
+            if (vehicle.Manufacturer != null)
+            {
+                var manufacturer = VehicleManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
+                if (manufacturer != null)
+                {
+                    if (manufacturer.Vehicles == null)
+                    {
+                        manufacturer.Vehicles = new List<Vehicle>();
+                    }
+                    manufacturer.Vehicles.Add(vehicle);
+                }
+            }
+
+            _vehicles.Add(vehicle);
+        }
+
+        public static void UpdateVehicle(int vehicleId, Vehicle updatedVehicle)
+        {
             var vehicleToUpdate = _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
             if (vehicleToUpdate != null)
             {
-                vehicleToUpdate.VehicleModel = vehicle.VehicleModel;
-                vehicleToUpdate.PlateNumber = vehicle.PlateNumber;
-                vehicleToUpdate.Color = vehicle.Color;
-                vehicleToUpdate.Manufacturer = vehicle.Manufacturer;
-                vehicleToUpdate.NumberOfSeats = vehicle.NumberOfSeats;
+                vehicleToUpdate.VehicleModel = updatedVehicle.VehicleModel;
+                vehicleToUpdate.PlateNumber = updatedVehicle.PlateNumber;
+                vehicleToUpdate.NumberOfSeats = updatedVehicle.NumberOfSeats;
+                vehicleToUpdate.Color = updatedVehicle.Color;
+
+                if (updatedVehicle.Manufacturer != null)
+                {
+                    var manufacturer = VehicleManufacturerRepository.GetManufacturerById(updatedVehicle.Manufacturer.ManufacturerId);
+                    if (manufacturer != null)
+                    {
+                        vehicleToUpdate.Manufacturer = manufacturer;
+                    }
+                }
             }
         }
 
         public static void DeleteVehicle(int vehicleId)
         {
             var vehicle = _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
-            if( vehicle != null)
+            if (vehicle != null)
             {
+                if (vehicle.Manufacturer != null)
+                {
+                    var manufacturer = VehicleManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
+                    if (manufacturer != null && manufacturer.Vehicles != null)
+                    {
+                        manufacturer.Vehicles.Remove(vehicle);
+                    }
+                }
+
                 _vehicles.Remove(vehicle);
             }
         }
 
+        public static List<Vehicle> GetVehiclesByManufacturerId(int manufacturerId)
+        {
+            return _vehicles.Where(v => v.Manufacturer?.ManufacturerId == manufacturerId).ToList();
+        }
+
+        public static List<Vehicle> GetVehiclesByDriverId(int driverId)
+        {
+            var vehicleDrivers = VehicleDriverRepository.GetVehicleDrivers();
+
+            var vehicleIds = vehicleDrivers
+                .Where(vd => vd.DriverId == driverId)
+                .Select(vd => vd.VehicleId)
+                .ToList();
+
+            return _vehicles.Where(v => vehicleIds.Contains(v.VehicleId)).ToList();
+        }
     }
 }

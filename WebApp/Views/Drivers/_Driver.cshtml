@@ -9,42 +9,33 @@
     {
         <input type="hidden" asp-for="DriverId" />
         
-        <input type="hidden" asp-for="Vehicle" />
+        <input type="hidden" asp-for="VehicleDrivers" />
     }
 
-    <input type="hidden" asp-for="VehicleId" />
 
     <div class="text-danger" asp-validation-summary="All"></div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="DriverName" class="col-form-label"></label>
+            <label asp-for="Name" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="DriverName" class="form-control" />
+            <input type="text" asp-for="Name" class="form-control" />
         </div>
         <div class="col">
-            <span class="text-danger" asp-validation-for="DriverName"></span>
+            <span class="text-danger" asp-validation-for="Name"></span>
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="StartDate" class="col-form-label"></label>
+            <label asp-for="LicenseNumber" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="date" asp-for="StartDate" class="form-control" />
+            <input type="text" asp-for="LicenseNumber" class="form-control" />
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-2">
-            <label asp-for="EndDate" class="col-form-label"></label>
-        </div>
-        <div class="col-6">
-            <input type="date" asp-for="EndDate" class="form-control" />
-        </div>
-    </div>
 
     <div class="row mb-3">
         <div class="col-2">

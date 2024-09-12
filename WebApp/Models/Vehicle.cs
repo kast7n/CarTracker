@@ -5,6 +5,10 @@ namespace WebApp.Models
     public class Vehicle
     {
         public int VehicleId { get; set; }
+
+        public VehicleType? Type { get; set; }
+
+
         [Required]
         [Display(Name = "Model")]
         public string? VehicleModel { get; set; }
@@ -18,7 +22,10 @@ namespace WebApp.Models
         [Required]
         public string? Color { get; set; }
         [Required]
-        public string? Manufacturer { get; set; }
+        public Manufacturer? Manufacturer { get; set; }
+
+        public List<VehicleDriver>? VehicleDrivers {  get; set; }
+        public List<Maintenance>? Maintenances { get; set; }
 
 
     }

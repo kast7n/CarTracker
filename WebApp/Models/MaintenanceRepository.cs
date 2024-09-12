@@ -1,10 +1,19 @@
-﻿namespace WebApp.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace WebApp.Models
 {
-    public class MaintenanceRepository
+    public static class MaintenanceRepository
     {
-        private static List<Maintenance> _maintenanceHistory = new List<Maintenance>()
+        private static List<Maintenance> _maintenanceHistory = new List<Maintenance>();
+
+        static MaintenanceRepository()
         {
-       new Maintenance
+            // Initialize with some sample data
+            _maintenanceHistory.AddRange(new[]
+            {
+                new Maintenance
                 {
                     MaintenanceId = 1,
                     VehicleId = 1,
@@ -31,82 +40,70 @@
                     Description = "Inspected and replaced brake pads.",
                     Vehicle = VehiclesRepository.GetVehicleById(2)
                 }
-        };
-
-
-        public static void AddMaintenanceHistory(Maintenance maintenance)
-        {
-            if (_maintenanceHistory != null && _maintenanceHistory.Count > 0)
-            {
-                var maxId = _maintenanceHistory.Max(x => x.MaintenanceId);
-                maintenance.MaintenanceId = maxId + 1;
-            }
-            else
-            {
-                maintenance.MaintenanceId = 1;
-            }
-            if (_maintenanceHistory == null)
-            {
-                _maintenanceHistory = new List<Maintenance>();
-            }
-            _maintenanceHistory.Add(maintenance);
+            });
         }
 
         public static List<Maintenance> GetMaintenanceHistory() => _maintenanceHistory;
 
-        public static Maintenance? GetMaintenanceHistoryById(int maintenanceHistoryId)
+        public static Maintenance? GetMaintenanceById(int maintenanceId)
         {
-            var maintenance = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceHistoryId);
-            if (maintenance != null)
-            {
-                return new Maintenance
-                {
-                    MaintenanceId = maintenance.MaintenanceId,
-                    MaintenanceDate = maintenance.MaintenanceDate,
-                    MaintenanceType = maintenance.MaintenanceType,
-                    Description = maintenance.Description,
-                    VehicleId = maintenance.VehicleId,
-                    Vehicle = maintenance.Vehicle
-                };
-            }
-            return null;
+            var maintenance = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceId);
+            return maintenance != null ? CloneMaintenance(maintenance) : null;
         }
 
-        public static List<Maintenance> GetMaintenanceHistoryByVehicleId(int vehicleId)
+        public static List<Maintenance> GetMaintenanceByVehicleId(int vehicleId)
         {
-            var maintenance = _maintenanceHistory.Where(x => x.VehicleId == vehicleId);
-            if (maintenance != null)
-            {
-                return maintenance.ToList();
-            }
-            else
-            {
-                return new List<Maintenance>();
-            }
+            return _maintenanceHistory
+                .Where(x => x.VehicleId == vehicleId)
+                .Select(CloneMaintenance)
+                .ToList();
         }
 
-
-        public static void UpdateMaintenanceHistory(int maintenanceHistoryId, Maintenance maintenance)
+        public static void AddMaintenance(Maintenance maintenance)
         {
-            if (maintenanceHistoryId != maintenance.MaintenanceId) return;
-            var maintenanceToUpdate = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceHistoryId);
+            if (maintenance.MaintenanceId == 0)
+            {
+                maintenance.MaintenanceId = _maintenanceHistory.Any() ? _maintenanceHistory.Max(x => x.MaintenanceId) + 1 : 1;
+            }
+
+            // Update vehicle reference
+            var vehicle = VehiclesRepository.GetVehicleById(maintenance.VehicleId);
+            maintenance.Vehicle = vehicle;
+
+            _maintenanceHistory.Add(maintenance);
+        }
+
+        public static void UpdateMaintenance(int maintenanceId, Maintenance updatedMaintenance)
+        {
+            var maintenanceToUpdate = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceId);
             if (maintenanceToUpdate != null)
             {
-                maintenanceToUpdate.MaintenanceType = maintenance.MaintenanceType;
-                maintenanceToUpdate.MaintenanceDate = maintenance.MaintenanceDate;
-                maintenanceToUpdate.Description = maintenance.Description;
+                maintenanceToUpdate.MaintenanceType = updatedMaintenance.MaintenanceType;
+                maintenanceToUpdate.MaintenanceDate = updatedMaintenance.MaintenanceDate;
+                maintenanceToUpdate.Description = updatedMaintenance.Description;
             }
         }
 
-        public static void DeleteMaintenanceHistory(int maintenanceHistoryId)
+        public static void DeleteMaintenance(int maintenanceId)
         {
-            var maintenance = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceHistoryId);
+            var maintenance = _maintenanceHistory.FirstOrDefault(x => x.MaintenanceId == maintenanceId);
             if (maintenance != null)
             {
                 _maintenanceHistory.Remove(maintenance);
             }
         }
 
+        private static Maintenance CloneMaintenance(Maintenance maintenance)
+        {
+            return new Maintenance
+            {
+                MaintenanceId = maintenance.MaintenanceId,
+                VehicleId = maintenance.VehicleId,
+                MaintenanceType = maintenance.MaintenanceType,
+                MaintenanceDate = maintenance.MaintenanceDate,
+                Description = maintenance.Description,
+                Vehicle = maintenance.Vehicle
+            };
+        }
     }
 }
-

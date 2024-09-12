@@ -17,14 +17,14 @@ namespace WebApp.Controllers
 
         public IActionResult MaintenanceHistoryByVehiclePartial(int vehicleId)
         {
-            var history = MaintenanceRepository.GetMaintenanceHistoryByVehicleId(vehicleId);
+            var history = MaintenanceRepository.GetMaintenanceByVehicleId(vehicleId);
 
             return PartialView("_MaintenanceHistory", history);
         }
 
         public IActionResult DriversHistoryByVehiclePartial(int vehicleId)
         {
-            var history = DriversRepository.GetDriversHistoryByVehicleId(vehicleId);
+            var history = VehicleDriverRepository.GetVehicleDriversByVehicleId(vehicleId);
 
             return PartialView("_DriversHistory", history);
         }
