@@ -52,12 +52,13 @@
 
         </div>
 
-
+        <a id="addHistory" class="btn btn-primary visually-hidden" asp-controller="Drivers" asp-action="add" asp-route-id="@Model.SelectedVehicleId">Add</a>
     </div>
 
-    <div class="col" id="HistoryTable" >
+    <div class="col">
         @* List of transactions *@
-        <p id="vehicleId"></p>
+        <div id="HistoryTable"></div>
+
 
     </div>
 </div>
@@ -77,6 +78,7 @@
                 selectedVehicleId = $(this).val();
                 $(".historyCategoryRow").removeClass('highlight');
                 $("#HistoryTable").hide();
+                $("#addHistory").addClass('visually-hidden');
     
             })
 
@@ -101,6 +103,11 @@
             console.log(vehicleId);
             $("#HistoryTable").show();
             $("#HistoryTable").load("/History/MaintenanceHistorybyVehiclePartial", { vehicleId: vehicleId });
+            $("#addHistory").attr("asp-controller", "Maintenance");
+            $("#addHistory").attr("asp-route-id", vehicleId);
+            $("#addHistory").attr("href", `Maintenance/add/${vehicleId}`);
+            $("#addHistory").removeClass('visually-hidden');
+
            
         }
 
@@ -108,10 +115,16 @@
             console.log(vehicleId);
             $("#HistoryTable").show();
             $("#HistoryTable").load("/History/DriversHistoryByVehiclePartial", { vehicleId: vehicleId });
+            $("#addHistory").attr("asp-controller", "Drivers");
+            $("#addHistory").attr("asp-route-id", vehicleId);
+            $("#addHistory").attr("href", `Drivers/add/${vehicleId}`);
+            $("#addHistory").removeClass('visually-hidden');
 
         }
 
-
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this category?")
+        }
 
 
     </script>

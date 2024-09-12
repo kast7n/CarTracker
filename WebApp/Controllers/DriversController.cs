@@ -31,5 +31,35 @@ namespace WebApp.Controllers
 
             return View(driver);
         }
+
+        [HttpGet]
+        public IActionResult Add(int id) // VehicleId passed so user doesn't select a vehicle in the form, vehicle is selected when he chooses which vehicle to add the driver to
+        {
+            ViewBag.Action = "add";
+            var driver = new Driver
+            {
+                VehicleId = id
+            };
+            return View(driver);
+        }
+        [HttpPost]
+        public IActionResult Add(Driver driver)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                driver.Vehicle = VehiclesRepository.GetVehicleById(driver.VehicleId);
+                DriversRepository.AddDriver(driver);
+                return RedirectToAction(nameof(Index), "History");
+            }
+
+            return View(driver);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            DriversRepository.DeleteDriver(id);
+            return RedirectToAction(nameof(Index), "History");
+        }
     }
 }

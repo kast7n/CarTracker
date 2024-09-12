@@ -15,7 +15,7 @@
                 },
                 new Maintenance
                 {
-                    MaintenanceId = 1,
+                    MaintenanceId = 2,
                     VehicleId = 1,
                     MaintenanceType = "Tire Rotation",
                     MaintenanceDate = new DateTime(2024, 2, 20),

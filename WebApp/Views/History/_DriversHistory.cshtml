@@ -7,6 +7,8 @@
             <th>Driver Name</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>End Date</th>
+            <th>End Date</th>
         </tr>
     </thead>
     <tbody>
@@ -22,10 +24,13 @@
                         }
                         else
                         {
-                            @Html.Raw("Current")
+                            @Html.Raw("Current owner")
                         }
                     </td>
-            </tr>
+                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="edit" asp-route-id="@hist.DriverId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="delete" asp-route-id="@hist.DriverId" onclick="return confirmDelete()">Delete</a></td>
+
+                </tr>
         }
     </tbody>
 

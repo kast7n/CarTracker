@@ -16,8 +16,8 @@
                 <td>@hist.MaintenanceType</td>
                 <td>@hist.MaintenanceDate.ToString("dd/MM/yy")</td>
                 <td>@hist.Description</td>
-                <td><a class="btn btn-link" asp-controller="history" asp-action="edit" asp-route-id="@hist.MaintenanceId">Edit</a></td>
-                    <td><a class="btn btn-link" asp-controller="history" asp-action="delete" asp-route-categoryid="@hist.MaintenanceId" onclick="return confirmDelete()">Delete</a></td>
+                <td><a class="btn btn-link" asp-controller="maintenance" asp-action="edit" asp-route-id="@hist.MaintenanceId">Edit</a></td>
+                <td><a class="btn btn-link" asp-controller="maintenance" asp-action="delete" asp-route-id="@hist.MaintenanceId" onclick="return confirmDelete()">Delete</a></td>
             </tr>
         }
     </tbody>
@@ -25,7 +25,7 @@
 </table>
 
 }
-<a class="btn btn-primary" asp-controller="history" asp-action="add">Add</a>
+
 @section Scripts {
     <script>
         function confirmDelete() {
