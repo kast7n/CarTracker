@@ -13,6 +13,6 @@ namespace WebApp.Models
         [Display(Name = "License Number")]
         public string? LicenseNumber { get; set; }
 
-        public List<VehicleDriver>? VehicleDrivers { get; set; }
+        //public List<VehicleDriver> VehicleDrivers { get; set; } = new List<VehicleDriver>();
     }
 }

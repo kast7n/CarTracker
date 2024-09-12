@@ -32,7 +32,7 @@ namespace WebApp.Models
                 manufacturer.ManufacturerId = _manufacturers.Any() ? _manufacturers.Max(x => x.ManufacturerId) + 1 : 1;
             }
 
-            manufacturer.Vehicles = new List<Vehicle>();
+
             _manufacturers.Add(manufacturer);
         }
 

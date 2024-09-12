@@ -8,6 +8,8 @@ namespace WebApp.Models
 
         public int DriverId { get; set; }
         public Driver? Driver {  get; set; }   
+
+        public string? DriverName { get; set; }
         
         [Required]
         [Display(Name = "Vehicle")]

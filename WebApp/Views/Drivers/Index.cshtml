@@ -22,7 +22,7 @@
                 <tr>
                     <td>@driver.Name</td>
                     <td>@driver.LicenseNumber</td>
-                    <td>@driver.VehicleDrivers?.Count()</td>
+                    <td></td>
                     <td><a class="btn btn-link" asp-controller="drivers" asp-action="edit" asp-route-id="@driver.DriverId">Edit</a></td>
                     <td><a class="btn btn-link" asp-controller="drivers" asp-action="delete" asp-route-driverid="@driver.DriverId" onclick="return confirmDelete()">Delete</a></td>
                 </tr>

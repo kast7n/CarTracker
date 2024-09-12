@@ -7,11 +7,13 @@ namespace WebApp.Models
         // Sample in-memory storage for VehicleDriver assignments
         private static List<VehicleDriver> _vehicleDrivers = new List<VehicleDriver>()
         {
-            new VehicleDriver { AssignmentId = 1, DriverId = 1, VehicleId = 1, StartDate = new DateTime(2023, 1, 1), EndDate = null },
-            new VehicleDriver { AssignmentId = 2, DriverId = 1, VehicleId = 1, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 12, 1) },
-            new VehicleDriver { AssignmentId = 3, DriverId = 2, VehicleId = 2, StartDate = new DateTime(2023, 2, 1), EndDate = new DateTime(2023, 8, 1) },
-            new VehicleDriver { AssignmentId = 4, DriverId = 1, VehicleId = 3, StartDate = new DateTime(2023, 3, 1), EndDate = null }
+            new VehicleDriver { AssignmentId = 1, DriverId = 1,DriverName = DriversRepository.GetDriverById(1)?.Name,  VehicleId = 1, StartDate = new DateTime(2023, 1, 1), EndDate = null },
+            new VehicleDriver { AssignmentId = 2, DriverId = 1, DriverName = DriversRepository.GetDriverById(1)?.Name, VehicleId = 1, StartDate = new DateTime(2023, 6, 1), EndDate = new DateTime(2023, 12, 1) },
+            new VehicleDriver { AssignmentId = 3, DriverId = 2, DriverName = DriversRepository.GetDriverById(2)?.Name, VehicleId = 2, StartDate = new DateTime(2023, 2, 1), EndDate = new DateTime(2023, 8, 1) },
+            new VehicleDriver { AssignmentId = 4, DriverId = 1, DriverName = DriversRepository.GetDriverById(1)?.Name, VehicleId = 3, StartDate = new DateTime(2023, 3, 1), EndDate = null }
         };
+
+    
 
         public static void AddVehicleDriver(VehicleDriver vehicleDriver)
         {
@@ -20,6 +22,8 @@ namespace WebApp.Models
             {
                 vehicleDriver.AssignmentId = _vehicleDrivers.Max(vd => vd.AssignmentId) + 1;
             }
+            vehicleDriver.Vehicle = VehiclesRepository.GetVehicleById(vehicleDriver.VehicleId);
+            vehicleDriver.Driver = DriversRepository.GetDriverById(vehicleDriver.DriverId);
 
             _vehicleDrivers.Add(vehicleDriver);
         }

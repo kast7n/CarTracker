@@ -24,8 +24,8 @@ namespace WebApp.Models
         [Required]
         public Manufacturer? Manufacturer { get; set; }
 
-        public List<VehicleDriver>? VehicleDrivers {  get; set; }
-        public List<Maintenance>? Maintenances { get; set; }
+        //public List<VehicleDriver>? VehicleDrivers {  get; set; }
+        //public List<Maintenance>? Maintenances { get; set; }
 
 
     }

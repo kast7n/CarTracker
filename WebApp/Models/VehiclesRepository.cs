@@ -22,11 +22,7 @@ namespace WebApp.Models
                 new Vehicle { VehicleId = 3, VehicleModel = "F-150", PlateNumber = "LMN789", NumberOfSeats = 6, Color = "Black", Manufacturer = ford }
             });
 
-            // Assign vehicles to manufacturers
-            foreach (var manufacturer in VehicleManufacturerRepository.GetManufacturers())
-            {
-                manufacturer.Vehicles = _vehicles.Where(v => v.Manufacturer?.ManufacturerId == manufacturer.ManufacturerId).ToList();
-            }
+ 
         }
 
         public static List<Vehicle> GetVehicles() => _vehicles;
@@ -41,19 +37,6 @@ namespace WebApp.Models
             if (vehicle.VehicleId == 0)
             {
                 vehicle.VehicleId = _vehicles.Any() ? _vehicles.Max(x => x.VehicleId) + 1 : 1;
-            }
-
-            if (vehicle.Manufacturer != null)
-            {
-                var manufacturer = VehicleManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
-                if (manufacturer != null)
-                {
-                    if (manufacturer.Vehicles == null)
-                    {
-                        manufacturer.Vehicles = new List<Vehicle>();
-                    }
-                    manufacturer.Vehicles.Add(vehicle);
-                }
             }
 
             _vehicles.Add(vehicle);
@@ -88,10 +71,7 @@ namespace WebApp.Models
                 if (vehicle.Manufacturer != null)
                 {
                     var manufacturer = VehicleManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
-                    if (manufacturer != null && manufacturer.Vehicles != null)
-                    {
-                        manufacturer.Vehicles.Remove(vehicle);
-                    }
+             
                 }
 
                 _vehicles.Remove(vehicle);

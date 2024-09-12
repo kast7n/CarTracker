@@ -15,7 +15,7 @@
         @foreach (var vehicleDriver in Model)
         {
             <tr>
-                    <td>@vehicleDriver.Driver?.Name</td>
+                    <td>@vehicleDriver.DriverName</td>
                     <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
                     <td>
                         @if (vehicleDriver.EndDate.HasValue)

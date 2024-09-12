@@ -36,7 +36,6 @@ namespace WebApp.Models
             var driver = _drivers.FirstOrDefault(x => x.DriverId == driverId);
             if (driver != null)
             {
-                driver.VehicleDrivers = VehicleDriverRepository.GetVehicleDrivers().Where(vd => vd.DriverId == driverId).ToList();
                 return driver;
             }
             return null;
@@ -49,8 +48,6 @@ namespace WebApp.Models
                 driver.DriverId = _drivers.Any() ? _drivers.Max(x => x.DriverId) + 1 : 1;
             }
 
-            // Retrieve and set vehicle drivers for the new driver
-            driver.VehicleDrivers = VehicleDriverRepository.GetVehicleDrivers().Where(vd => vd.DriverId == driver.DriverId).ToList();
 
             _drivers.Add(driver);
         }
