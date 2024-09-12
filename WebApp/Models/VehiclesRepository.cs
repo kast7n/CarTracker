@@ -10,26 +10,63 @@ namespace WebApp.Models
 
         static VehiclesRepository()
         {
-            // Initialize with some vehicles for demonstration
-            var tesla = VehicleManufacturerRepository.GetManufacturerById(1);
-            var honda = VehicleManufacturerRepository.GetManufacturerById(2);
-            var ford = VehicleManufacturerRepository.GetManufacturerById(3);
+
 
             _vehicles.AddRange(new[]
             {
-                new Vehicle { VehicleId = 1, VehicleModel = "Model S", PlateNumber = "ABC123", NumberOfSeats = 5, Color = "Red", Manufacturer = tesla },
-                new Vehicle { VehicleId = 2, VehicleModel = "Accord", PlateNumber = "XYZ456", NumberOfSeats = 4, Color = "Blue", Manufacturer = honda },
-                new Vehicle { VehicleId = 3, VehicleModel = "F-150", PlateNumber = "LMN789", NumberOfSeats = 6, Color = "Black", Manufacturer = ford }
+                new Vehicle { VehicleId = 1, VehicleModel = "Model S", PlateNumber = "ABC123", NumberOfSeats = 5, Color = "Red", ManufacturerId = 1 ,TypeId = 2},
+                new Vehicle { VehicleId = 2, VehicleModel = "Accord", PlateNumber = "XYZ456", NumberOfSeats = 4, Color = "Blue", ManufacturerId = 2 ,TypeId = 1},
+                new Vehicle { VehicleId = 3, VehicleModel = "F-150", PlateNumber = "LMN789", NumberOfSeats = 6, Color = "Black", ManufacturerId = 3 ,TypeId = 3}
             });
 
  
         }
 
-        public static List<Vehicle> GetVehicles() => _vehicles;
-
-        public static Vehicle? GetVehicleById(int vehicleId)
+        public static List<Vehicle> GetVehicles(bool loadInfo = false)
         {
-            return _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
+            if(!loadInfo) return _vehicles;
+            else
+            {
+                if(_vehicles.Count > 0  && _vehicles != null)
+                {
+                    _vehicles.ForEach(x =>
+                    {
+                        if (x.TypeId.HasValue)
+                        {
+                            x.Type = VehicleTypeRepository.GetVehicleTypeById(x.TypeId.Value);
+                        }
+                        if (x.ManufacturerId.HasValue)
+                        {
+                            x.Manufacturer = VehicleManufacturerRepository.GetManufacturerById(x.ManufacturerId.Value);
+                        }
+                    });
+                }
+                return _vehicles ?? new List<Vehicle>();
+            }
+        }
+        public static Vehicle? GetVehicleById(int vehicleId, bool loadInfo = false)
+        {
+            var vehicle = _vehicles.FirstOrDefault(x => x.VehicleId == vehicleId);
+            if (vehicle != null)
+            {
+                var veh = new Vehicle
+                {
+                    VehicleId = vehicle.VehicleId,
+                    TypeId = vehicle.TypeId,
+                    ManufacturerId = vehicle.ManufacturerId,
+                    Color = vehicle.Color,
+                    VehicleModel = vehicle.VehicleModel,
+                    NumberOfSeats = vehicle.NumberOfSeats,
+                    PlateNumber = vehicle.PlateNumber
+                };
+                if (loadInfo && veh.ManufacturerId.HasValue && veh.TypeId.HasValue)
+                {
+                    veh.Manufacturer = VehicleManufacturerRepository.GetManufacturerById(veh.ManufacturerId.Value);
+                    veh.Type = VehicleTypeRepository.GetVehicleTypeById(veh.TypeId.Value);
+                }
+                return veh;
+            }
+            return null;
         }
 
         public static void AddVehicle(Vehicle vehicle)
@@ -51,15 +88,12 @@ namespace WebApp.Models
                 vehicleToUpdate.PlateNumber = updatedVehicle.PlateNumber;
                 vehicleToUpdate.NumberOfSeats = updatedVehicle.NumberOfSeats;
                 vehicleToUpdate.Color = updatedVehicle.Color;
-
-                if (updatedVehicle.Manufacturer != null)
-                {
-                    var manufacturer = VehicleManufacturerRepository.GetManufacturerById(updatedVehicle.Manufacturer.ManufacturerId);
-                    if (manufacturer != null)
-                    {
-                        vehicleToUpdate.Manufacturer = manufacturer;
-                    }
-                }
+                vehicleToUpdate.ManufacturerId = updatedVehicle.ManufacturerId;
+                vehicleToUpdate.TypeId = updatedVehicle.TypeId;
+                vehicleToUpdate.Manufacturer = updatedVehicle.Manufacturer;
+                vehicleToUpdate.Type = updatedVehicle.Type; 
+                
+             
             }
         }
 
@@ -80,7 +114,7 @@ namespace WebApp.Models
 
         public static List<Vehicle> GetVehiclesByManufacturerId(int manufacturerId)
         {
-            return _vehicles.Where(v => v.Manufacturer?.ManufacturerId == manufacturerId).ToList();
+            return _vehicles.Where(v => v.ManufacturerId == manufacturerId).ToList();
         }
 
         public static List<Vehicle> GetVehiclesByDriverId(int driverId)

@@ -1,4 +1,5 @@
-﻿@model Vehicle
+﻿
+@model VehiclesViewModel
 
 @{
     string action = ViewBag.Action ?? string.Empty;
@@ -7,7 +8,7 @@
 <form method="post" asp-controller="vehicles" asp-action="@action">
     @if (action?.ToLower() == "edit")
     {
-        <input type="hidden" asp-for="VehicleId" />
+        <input type="hidden" asp-for="Vehicle.VehicleId" />
     }
 
 
@@ -15,46 +16,73 @@
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="VehicleModel" class="col-form-label"></label>
+            <label asp-for="Vehicle.VehicleModel" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="VehicleModel" class="form-control" required />
+            <input type="text" asp-for="Vehicle.VehicleModel" class="form-control" required />
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="PlateNumber" class="col-form-label"></label>
+            <label asp-for="Vehicle.PlateNumber" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="PlateNumber" class="form-control" required />
+            <input type="text" asp-for="Vehicle.PlateNumber" class="form-control" required />
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="NumberOfSeats" class="col-form-label"></label>
+            <label asp-for="Vehicle.NumberOfSeats" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="number" min="1" asp-for="NumberOfSeats" class="form-control" required />
+            <input type="number" min="1" asp-for="Vehicle.NumberOfSeats" class="form-control" required />
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="Color" class="col-form-label"></label>
+            <label asp-for="Vehicle.Color" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="Color" class="form-control" required />
+            <input type="text" asp-for="Vehicle.Color" class="form-control" required />
         </div>
     </div>
 
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="Manufacturer" class="col-form-label"></label>
+            <label asp-for="Vehicle.TypeId" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="Manufacturer" class="form-control" required />
+            <select asp-for="Vehicle.TypeId" class="form-control">
+                <option>- Please Select -</option>
+                @if (Model.VehicleTypes != null && Model.VehicleTypes.Count() > 0)
+                {
+                    @foreach (var type in Model.VehicleTypes)
+                    {
+                        <option value="@type.TypeId">@type.TypeName</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Vehicle.ManufacturerId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="Vehicle.ManufacturerId" class="form-control">
+                <option>- Please Select -</option>
+                @if (Model.Manufacturers != null && Model.Manufacturers.Count() > 0)
+                {
+                    @foreach (var manufacturer in Model.Manufacturers)
+                    {
+                        <option value="@manufacturer.ManufacturerId">@manufacturer.ManufacturerName</option>
+                    }
+                }
+            </select>
         </div>
     </div>
 

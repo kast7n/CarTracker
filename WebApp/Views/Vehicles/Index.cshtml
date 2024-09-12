@@ -13,6 +13,7 @@
                 <th scope="col">Plate Number</th>
                 <th scope="col">Seats</th>
                 <th scope="col">Color</th>
+                <th scope="col">Type</th>
                 <th scope="col">Manufacturer</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -26,7 +27,8 @@
                     <td>@vehicle.PlateNumber</td>
                     <td>@vehicle.NumberOfSeats</td>
                     <td>@vehicle.Color</td>
-                    <td>@vehicle.Manufacturer</td>
+                    <td>@vehicle.Type?.TypeName</td>
+                    <td>@vehicle.Manufacturer?.ManufacturerName</td>
                     <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="edit" asp-route-id="@vehicle.VehicleId">Edit</a></td>
                     <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="delete" asp-route-vehicleid="@vehicle.VehicleId" onclick="return confirmDelete()">Delete</a></td>
                 </tr>
