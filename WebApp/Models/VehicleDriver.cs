@@ -4,7 +4,7 @@ namespace WebApp.Models
 {
     public class VehicleDriver
     {
-        public int AssignmentId { get; set; }
+        public int VehicleDriverId { get; set; }
 
         public int DriverId { get; set; }
         public Driver? Driver {  get; set; }   
@@ -19,8 +19,10 @@ namespace WebApp.Models
         [Required]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
+
+        [Required]
         [Display(Name = "End Date")]
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
     }
 }

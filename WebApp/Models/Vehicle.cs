@@ -6,11 +6,9 @@ namespace WebApp.Models
     {
         public int VehicleId { get; set; }
 
-        public int? TypeId {  get; set; }
 
-        public int? ManufacturerId { get; set; }
+        
 
-        public VehicleType? Type { get; set; }
 
         [Required]
         [Display(Name = "Model")]
@@ -24,11 +22,18 @@ namespace WebApp.Models
         public int NumberOfSeats { get; set; }
         [Required]
         public string? Color { get; set; }
+
+
+
+        public int? ManufacturerId { get; set; }
         [Required]
         public Manufacturer? Manufacturer { get; set; } = new Manufacturer();
 
-        //public List<VehicleDriver>? VehicleDrivers {  get; set; }
-        //public List<Maintenance>? Maintenances { get; set; }
+        public int? TypeId { get; set; }
+        public VehicleType? Type { get; set; }
+
+        public List<VehicleDriver>? VehicleDrivers {  get; set; }
+        public List<Maintenance>? Maintenances { get; set; }
 
 
     }

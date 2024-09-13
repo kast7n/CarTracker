@@ -18,17 +18,15 @@
                     <td>@vehicleDriver.DriverName</td>
                     <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
                     <td>
-                        @if (vehicleDriver.EndDate.HasValue)
-                        {
-                            @vehicleDriver.EndDate.Value.ToString("dd/MM/yy")
-                        }
-                        else
-                        {
-                            @Html.Raw("Current owner")
-                        }
+                     
+                            @vehicleDriver.EndDate.ToString("dd/MM/yy")
+                        
+                        
+                           
+                        
                     </td>
-                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.AssignmentId">Edit</a></td>
-                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.AssignmentId" onclick="return confirmDelete()">Delete</a></td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.VehicleDriverId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.VehicleDriverId" onclick="return confirmDelete()">Delete</a></td>
 
                 </tr>
         }

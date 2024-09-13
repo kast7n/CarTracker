@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehicleDriversRepository.UpdateVehicleDriver(vehicleDriverViewModel.VehicleDriver.AssignmentId, vehicleDriverViewModel.VehicleDriver);
+                VehicleDriversRepository.UpdateVehicleDriver(vehicleDriverViewModel.VehicleDriver.VehicleDriverId, vehicleDriverViewModel.VehicleDriver);
                 return RedirectToAction(nameof(Index), "History");
             }
 
