@@ -24,12 +24,12 @@ namespace WebApp.Models
         public string? Color { get; set; }
 
 
-
-        public int? ManufacturerId { get; set; }
         [Required]
-        public Manufacturer? Manufacturer { get; set; } = new Manufacturer();
-
-        public int? TypeId { get; set; }
+        public int ManufacturerId { get; set; }
+        
+        public Manufacturer? Manufacturer { get; set; }
+        [Required]
+        public int TypeId { get; set; }
         public VehicleType? Type { get; set; }
 
         public List<VehicleDriver>? VehicleDrivers {  get; set; }

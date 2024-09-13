@@ -56,7 +56,6 @@
         </div>
         <div class="col-6">
             <select asp-for="Vehicle.TypeId" class="form-control">
-                <option>- Please Select -</option>
                 @if (Model.VehicleTypes != null && Model.VehicleTypes.Count() > 0)
                 {
                     @foreach (var type in Model.VehicleTypes)
@@ -74,7 +73,6 @@
         </div>
         <div class="col-6">
             <select asp-for="Vehicle.ManufacturerId" class="form-control">
-                <option>- Please Select -</option>
                 @if (Model.Manufacturers != null && Model.Manufacturers.Count() > 0)
                 {
                     @foreach (var manufacturer in Model.Manufacturers)

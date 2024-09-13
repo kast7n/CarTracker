@@ -7,24 +7,17 @@
             <th>Driver Name</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>End Date</th>
-            <th>End Date</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var vehicleDriver in Model)
         {
             <tr>
-                    <td>@vehicleDriver.DriverName</td>
+                    <td>@vehicleDriver.Driver?.Name</td>
                     <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
-                    <td>
-                     
-                            @vehicleDriver.EndDate.ToString("dd/MM/yy")
-                        
-                        
-                           
-                        
-                    </td>
+                    <td>@vehicleDriver.EndDate.ToString("dd/MM/yy")</td>
                     <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.VehicleDriverId">Edit</a></td>
                     <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.VehicleDriverId" onclick="return confirmDelete()">Delete</a></td>
 

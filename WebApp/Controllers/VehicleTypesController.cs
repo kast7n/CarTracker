@@ -1,13 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories.Interfaces;
+
 
 namespace WebApp.Controllers
 {
     public class VehicleTypesController : Controller
     {
+        private readonly IVehicleTypeRepository vehicleTypeRepository;
+
+        public VehicleTypesController(IVehicleTypeRepository vehicleTypeRepository)
+        {
+            this.vehicleTypeRepository = vehicleTypeRepository;
+        }
+
         public IActionResult Index()
         {
-            var Type = VehicleTypeRepository.GetVehicleTypes();
+            var Type = vehicleTypeRepository.GetVehicleTypes();
             return View(Type);
         }
 
@@ -15,7 +24,7 @@ namespace WebApp.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.Action = "edit";
-            var type = VehicleTypeRepository.GetVehicleTypeById(id.HasValue ? id.Value : 0);
+            var type = vehicleTypeRepository.GetVehicleTypeById(id.HasValue ? id.Value : 0);
             return View(type);
 
         }
@@ -25,7 +34,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehicleTypeRepository.UpdateVehicleType(type.TypeId, type);
+                vehicleTypeRepository.Update(type.TypeId, type);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -44,7 +53,7 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                VehicleTypeRepository.AddVehicleType(type);
+                vehicleTypeRepository.Insert(type);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -53,7 +62,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            VehicleTypeRepository.DeleteVehicleType(id);
+            vehicleTypeRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }

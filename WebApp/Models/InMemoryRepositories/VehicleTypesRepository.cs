@@ -1,6 +1,4 @@
-﻿
-
-namespace WebApp.Models
+﻿namespace WebApp.Models.InMemoryRepositories
 {
     public static class VehicleTypeRepository
     {

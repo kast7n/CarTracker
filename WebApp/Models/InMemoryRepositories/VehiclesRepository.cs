@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WebApp.Models
+namespace WebApp.Models.InMemoryRepositories
 {
     public static class VehiclesRepository
     {
@@ -19,15 +19,15 @@ namespace WebApp.Models
                 new Vehicle { VehicleId = 3, VehicleModel = "F-150", PlateNumber = "LMN789", NumberOfSeats = 6, Color = "Black", ManufacturerId = 3 ,TypeId = 3}
             });
 
- 
+
         }
 
         public static List<Vehicle> GetVehicles(bool loadInfo = false)
         {
-            if(!loadInfo) return _vehicles;
+            if (!loadInfo) return _vehicles;
             else
             {
-                if(_vehicles.Count > 0  && _vehicles != null)
+                if (_vehicles.Count > 0 && _vehicles != null)
                 {
                     _vehicles.ForEach(x =>
                     {
@@ -91,9 +91,9 @@ namespace WebApp.Models
                 vehicleToUpdate.ManufacturerId = updatedVehicle.ManufacturerId;
                 vehicleToUpdate.TypeId = updatedVehicle.TypeId;
                 vehicleToUpdate.Manufacturer = updatedVehicle.Manufacturer;
-                vehicleToUpdate.Type = updatedVehicle.Type; 
-                
-             
+                vehicleToUpdate.Type = updatedVehicle.Type;
+
+
             }
         }
 
@@ -105,7 +105,7 @@ namespace WebApp.Models
                 if (vehicle.Manufacturer != null)
                 {
                     var manufacturer = ManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
-             
+
                 }
 
                 _vehicles.Remove(vehicle);

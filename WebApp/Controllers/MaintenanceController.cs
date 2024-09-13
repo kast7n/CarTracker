@@ -1,13 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories.Interfaces;
+
 
 namespace WebApp.Controllers
 {
     public class MaintenanceController : Controller
     {
+        private readonly IMaintenanceRepository maintenanceRepository;
+        private readonly IVehicleRepository vehicleRepository;
+
+        public MaintenanceController(IMaintenanceRepository maintenanceRepository, IVehicleRepository vehicleRepository)
+        {
+            this.maintenanceRepository = maintenanceRepository;
+            this.vehicleRepository = vehicleRepository;
+        }
         public IActionResult Index()
         {
-            var maintainenance = MaintenanceRepository.GetMaintenanceHistory();
+            var maintainenance = maintenanceRepository.GetMaintenanceHistory();
             return View(maintainenance);
         }
 
@@ -15,7 +25,7 @@ namespace WebApp.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.Action = "edit";
-            var maintenance = MaintenanceRepository.GetMaintenanceById(id.HasValue ? id.Value : 0);
+            var maintenance = maintenanceRepository.GetMaintenanceById(id.HasValue ? id.Value : 0);
             return View(maintenance);
 
         }
@@ -25,7 +35,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                MaintenanceRepository.UpdateMaintenance(maintenance.MaintenanceId, maintenance);
+                maintenanceRepository.Update(maintenance.MaintenanceId, maintenance);
                 return RedirectToAction(nameof(Index), "History");
             }
 
@@ -48,8 +58,8 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                maintenance.Vehicle = VehiclesRepository.GetVehicleById(maintenance.VehicleId);
-                MaintenanceRepository.AddMaintenance(maintenance);
+                maintenance.Vehicle = vehicleRepository.GetVehicleById(maintenance.VehicleId);
+                maintenanceRepository.Insert(maintenance);
                 return RedirectToAction(nameof(Index), "History");
             }
 
@@ -58,7 +68,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            MaintenanceRepository.DeleteMaintenance(id);
+            maintenanceRepository.Delete(id);
             return RedirectToAction(nameof(Index), "History");
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WebApp.Models
+namespace WebApp.Models.InMemoryRepositories
 {
     public static class DriversRepository
     {
@@ -69,7 +69,7 @@ namespace WebApp.Models
             if (driver != null)
             {
                 _drivers.Remove(driver);
-          
+
             }
         }
     }

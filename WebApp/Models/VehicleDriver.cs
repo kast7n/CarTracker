@@ -6,11 +6,11 @@ namespace WebApp.Models
     {
         public int VehicleDriverId { get; set; }
 
+        [Required]
+        [Display(Name = "Driver")]
         public int DriverId { get; set; }
         public Driver? Driver {  get; set; }   
-
-        public string? DriverName { get; set; }
-        
+ 
         [Required]
         [Display(Name = "Vehicle")]
         public int VehicleId { get; set; }

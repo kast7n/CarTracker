@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApp.Models;
 
-namespace WebApp.Models
+namespace WebApp.Data
 {
     public class VehicleInfoManagerContext : DbContext
     {
@@ -24,20 +25,32 @@ namespace WebApp.Models
             {
                 entity.HasKey(v => v.VehicleId);
 
-                entity.Property(v => v.VehicleModel).IsRequired().HasMaxLength(100);
+                entity.Property(v => v.VehicleModel).IsRequired();
 
-                entity.Property(v => v.Color).IsRequired().HasMaxLength(30);
+                entity.Property(v => v.Color).IsRequired();
 
                 entity.Property(v => v.NumberOfSeats).IsRequired();
 
                 entity.HasIndex(v => v.PlateNumber)
                       .IsUnique();
 
+
+                entity.HasIndex(v => v.ManufacturerId)
+                      .HasDatabaseName("IX_Vehicle_ManufacturerId");
+
+                entity.HasIndex(v => v.TypeId)
+                      .HasDatabaseName("IX_Vehicle_Type");
+
+                entity.HasIndex(v => new { v.ManufacturerId, v.TypeId })
+                      .HasDatabaseName("IX_Vehicle_ManufacturerId_Typeid");
+
+
+
                 entity.HasOne(v => v.Manufacturer)
                       .WithMany(m => m.Vehicles)
                       .HasForeignKey(v => v.ManufacturerId);
 
-                entity.HasOne(v => v.Type)     
+                entity.HasOne(v => v.Type)
                       .WithMany(vt => vt.Vehicles)
                       .HasForeignKey(v => v.TypeId);
 
@@ -83,7 +96,10 @@ namespace WebApp.Models
             {
                 entity.HasKey(vd => vd.VehicleDriverId);
 
-
+                entity.HasIndex(vd => vd.VehicleId)
+                      .HasDatabaseName("IX_VehicleDriver_VehicleId");
+                entity.HasIndex(vd => vd.DriverId)
+                      .HasDatabaseName("IX_VehicleDriver_DriverId");
 
                 entity.HasOne(vd => vd.Vehicle)
                       .WithMany(v => v.VehicleDrivers)
@@ -101,12 +117,12 @@ namespace WebApp.Models
             {
 
                 entity.HasKey(d => d.DriverId);
-                
+
 
                 entity.HasIndex(d => d.LicenseNumber)
                       .IsUnique();
 
-                
+
                 entity.HasMany(d => d.VehicleDrivers)
                       .WithOne(vd => vd.Driver)
                       .HasForeignKey(vd => vd.DriverId);

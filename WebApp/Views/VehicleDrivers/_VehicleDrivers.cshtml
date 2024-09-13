@@ -11,7 +11,6 @@
         
         <input type="hidden" asp-for="VehicleDriver.VehicleDriverId" />
 
-        <input type="hidden" asp-for="VehicleDriver.DriverName" />
     }
     <input type="hidden" asp-for="VehicleDriver.VehicleId" />
 
@@ -43,9 +42,9 @@
         <div class="col-6">
             <select asp-for="VehicleDriver.DriverId" class="form-control">
                 <option>- Please Select -</option>
-                @if (Model.drivers != null && Model.drivers.Count() > 0)
+                @if (Model.Drivers != null && Model.Drivers.Count() > 0)
                 {
-                    @foreach (var driver in Model.drivers)
+                    @foreach (var driver in Model.Drivers)
                     {
                         <option value="@driver.DriverId">@driver.Name</option>
                     }

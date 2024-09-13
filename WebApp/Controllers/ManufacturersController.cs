@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
     public class ManufacturersController : Controller
     {
+        private readonly IManufacturerRepository manufacturerRepository;
+
+        public ManufacturersController(IManufacturerRepository manufacturerRepository)
+        {
+            this.manufacturerRepository = manufacturerRepository;
+        }
         public IActionResult Index()
         {
-            var Type = ManufacturerRepository.GetManufacturers();
+            var Type = manufacturerRepository.GetManufacturers();
             return View(Type);
         }
 
@@ -15,7 +22,7 @@ namespace WebApp.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.Action = "edit";
-            var manufacturer = ManufacturerRepository.GetManufacturerById(id.HasValue ? id.Value : 0);
+            var manufacturer = manufacturerRepository.GetManufacturerById(id.HasValue ? id.Value : 0);
             return View(manufacturer);
 
         }
@@ -25,7 +32,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                ManufacturerRepository.UpdateManufacturer(manufacturer.ManufacturerId, manufacturer);
+                manufacturerRepository.Update(manufacturer.ManufacturerId, manufacturer);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -44,7 +51,7 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                ManufacturerRepository.AddManufacturer(manufacturer);
+                manufacturerRepository.Insert(manufacturer);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -53,7 +60,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            ManufacturerRepository.DeleteManufacturer(id);
+            manufacturerRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }

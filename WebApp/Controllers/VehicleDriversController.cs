@@ -1,15 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories;
+using WebApp.Repositories.Interfaces;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     public class VehicleDriversController : Controller
     {
+        private readonly IVehicleDriverRepository vehicleDriverRepository;
+        private readonly IDriverRepository driverRepository;
+        private readonly IVehicleRepository vehicleRepository;
+
+        public VehicleDriversController(IVehicleDriverRepository vehicleDriverRepository, IDriverRepository driverRepository, IVehicleRepository vehicleRepository)
+        {
+            this.vehicleDriverRepository = vehicleDriverRepository;
+            this.driverRepository = driverRepository;
+            this.vehicleRepository = vehicleRepository;
+        }
         public IActionResult Index()
         {
-            var maintainenance = VehicleDriversRepository.GetVehicleDrivers();
-            return View(maintainenance);
+            var vehicleDrivers = vehicleDriverRepository.GetVehicleDrivers();
+            return View(vehicleDrivers);
+            
         }
 
         [HttpGet]
@@ -18,8 +31,8 @@ namespace WebApp.Controllers
             ViewBag.Action = "edit";
             var vehicleDriverViewModel = new VehicleDriversViewModel
             {
-                VehicleDriver = VehicleDriversRepository.GetVehicleDriver(id.HasValue ? id.Value : 0) ?? new VehicleDriver(),
-                drivers = DriversRepository.GetDrivers()
+                VehicleDriver = vehicleDriverRepository.GetVehicleDriver(id.HasValue ? id.Value : 0) ?? new VehicleDriver(),
+                Drivers = driverRepository.GetDrivers()
             };
             return View(vehicleDriverViewModel);
 
@@ -30,7 +43,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehicleDriversRepository.UpdateVehicleDriver(vehicleDriverViewModel.VehicleDriver.VehicleDriverId, vehicleDriverViewModel.VehicleDriver);
+                vehicleDriverViewModel.VehicleDriver.Vehicle = vehicleRepository.GetVehicleById(vehicleDriverViewModel.VehicleDriver.VehicleId);
+                vehicleDriverViewModel.VehicleDriver.Driver = driverRepository.GetDriverById(vehicleDriverViewModel.VehicleDriver.DriverId);
+                vehicleDriverRepository.Update(vehicleDriverViewModel.VehicleDriver.VehicleDriverId, vehicleDriverViewModel.VehicleDriver);
                 return RedirectToAction(nameof(Index), "History");
             }
 
@@ -49,7 +64,7 @@ namespace WebApp.Controllers
             var vehicleDriverViewModel = new VehicleDriversViewModel
             {
                 VehicleDriver = vehicleDriver,
-                drivers = DriversRepository.GetDrivers()
+                Drivers = driverRepository.GetDrivers()
             };
 
 
@@ -61,8 +76,9 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                vehicleDriverViewModel.VehicleDriver.Vehicle = VehiclesRepository.GetVehicleById(vehicleDriverViewModel.VehicleDriver.VehicleId);
-                VehicleDriversRepository.AddVehicleDriver(vehicleDriverViewModel.VehicleDriver);
+                vehicleDriverViewModel.VehicleDriver.Vehicle = vehicleRepository.GetVehicleById(vehicleDriverViewModel.VehicleDriver.VehicleId);
+                vehicleDriverViewModel.VehicleDriver.Driver = driverRepository.GetDriverById(vehicleDriverViewModel.VehicleDriver.DriverId);
+                vehicleDriverRepository.Insert(vehicleDriverViewModel.VehicleDriver);
                 return RedirectToAction(nameof(Index), "History");
             }
 
@@ -71,7 +87,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            VehicleDriversRepository.DeleteVehicleDriver(id);
+            vehicleDriverRepository.Delete(id);
             return RedirectToAction(nameof(Index), "History");
         }
     }

@@ -1,6 +1,4 @@
-﻿
-
-namespace WebApp.Models
+﻿namespace WebApp.Models.InMemoryRepositories
 {
     public static class VehicleDriversRepository
     {
@@ -13,7 +11,7 @@ namespace WebApp.Models
             new VehicleDriver { VehicleDriverId = 4, DriverId = 1, DriverName = DriversRepository.GetDriverById(1)?.Name, VehicleId = 3, StartDate = new DateTime(2023, 3, 1), EndDate = new DateTime(2023, 12, 4) }
         };
 
-    
+
 
         public static void AddVehicleDriver(VehicleDriver vehicleDriver)
         {
@@ -51,7 +49,7 @@ namespace WebApp.Models
             var vehicleDriverToUpdate = _vehicleDrivers.FirstOrDefault(vd => vd.VehicleDriverId == assignmentId);
             if (vehicleDriverToUpdate != null)
             {
-                vehicleDriverToUpdate.DriverId  = updatedVehicleDriver.DriverId;
+                vehicleDriverToUpdate.DriverId = updatedVehicleDriver.DriverId;
                 vehicleDriverToUpdate.DriverName = DriversRepository.GetDriverById(updatedVehicleDriver.DriverId)?.Name;
                 vehicleDriverToUpdate.StartDate = updatedVehicleDriver.StartDate;
                 vehicleDriverToUpdate.EndDate = updatedVehicleDriver.EndDate;

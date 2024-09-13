@@ -1,14 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories.Interfaces;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     public class VehiclesController : Controller
     {
+        private readonly IVehicleRepository vehicleRepository;
+        private readonly IManufacturerRepository manufacturerRepository;
+        private readonly IVehicleTypeRepository vehicleTypeRepository;
+
+        public VehiclesController(IVehicleRepository vehicleRepository, IManufacturerRepository manufacturerRepository, IVehicleTypeRepository vehicleTypeRepository)
+        {
+            this.vehicleRepository = vehicleRepository;
+            this.manufacturerRepository = manufacturerRepository;
+            this.vehicleTypeRepository = vehicleTypeRepository;
+        }
         public IActionResult Index()
         {
-            var vehicles = VehiclesRepository.GetVehicles(loadInfo: true);
+            var vehicles = vehicleRepository.GetVehicles(loadInfo: true);
             return View(vehicles);
         }
 
@@ -19,9 +30,9 @@ namespace WebApp.Controllers
 
             var vehicleViewModel = new VehiclesViewModel
             {
-                Vehicle = VehiclesRepository.GetVehicleById(id, loadInfo: true) ??new Vehicle(),
-                Manufacturers = ManufacturerRepository.GetManufacturers(),
-                VehicleTypes = VehicleTypeRepository.GetVehicleTypes()
+                Vehicle = vehicleRepository.GetVehicleById(id, loadInfo: true) ??new Vehicle(),
+                Manufacturers = manufacturerRepository.GetManufacturers(),
+                VehicleTypes = vehicleTypeRepository.GetVehicleTypes()
             };
             
             return View(vehicleViewModel);
@@ -31,7 +42,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehiclesRepository.UpdateVehicle(vehicleViewModel.Vehicle.VehicleId,vehicleViewModel.Vehicle); 
+                vehicleRepository.Update(vehicleViewModel.Vehicle.VehicleId,vehicleViewModel.Vehicle); 
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicleViewModel);
@@ -43,8 +54,8 @@ namespace WebApp.Controllers
             ViewBag.Action = "add";
             var vehicleViewmodel = new VehiclesViewModel
             {
-                Manufacturers = ManufacturerRepository.GetManufacturers(),
-                VehicleTypes = VehicleTypeRepository.GetVehicleTypes()
+                Manufacturers = manufacturerRepository.GetManufacturers(),
+                VehicleTypes = vehicleTypeRepository.GetVehicleTypes()
             };
             return View(vehicleViewmodel);
         }
@@ -54,7 +65,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                VehiclesRepository.AddVehicle(vehicleViewModel.Vehicle);
+                vehicleRepository.Insert(vehicleViewModel.Vehicle);
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicleViewModel);
@@ -62,7 +73,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int vehicleId)
         {
-            VehiclesRepository.DeleteVehicle(vehicleId);
+            vehicleRepository.Delete(vehicleId);
             return RedirectToAction(nameof(Index));
         }
 

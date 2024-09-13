@@ -1,13 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories;
+using WebApp.Repositories.Interfaces;
+
 
 namespace WebApp.Controllers
 {
     public class DriversController : Controller
     {
+        private readonly IDriverRepository _driverRepository;
+        public DriversController(IDriverRepository driverRepository)
+        {
+            _driverRepository = driverRepository;
+        }
         public IActionResult Index()
         {
-            var drivers = DriversRepository.GetDrivers();
+            var drivers = _driverRepository.GetDrivers();
             return View(drivers);
         }
 
@@ -15,7 +23,7 @@ namespace WebApp.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.Action = "edit";
-            var driver = DriversRepository.GetDriverById(id.HasValue? id.Value:0);
+            var driver = _driverRepository.GetDriverById(id.HasValue? id.Value:0);
             return View(driver);
 
         }
@@ -25,7 +33,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                DriversRepository.UpdateDriver(driver.DriverId, driver);
+                _driverRepository.Update(driver.DriverId, driver);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -44,7 +52,7 @@ namespace WebApp.Controllers
             
             if (ModelState.IsValid)
             {
-                DriversRepository.AddDriver(driver);
+                _driverRepository.Insert(driver);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -53,7 +61,7 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            DriversRepository.DeleteDriver(id);
+            _driverRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }
