@@ -115,9 +115,9 @@
             console.log(vehicleId);
             $("#HistoryTable").show();
             $("#HistoryTable").load("/History/DriversHistoryByVehiclePartial", { vehicleId: vehicleId });
-            $("#addHistory").attr("asp-controller", "Drivers");
+            $("#addHistory").attr("asp-controller", "VehicleDrivers");
             $("#addHistory").attr("asp-route-id", vehicleId);
-            $("#addHistory").attr("href", `Drivers/add/${vehicleId}`);
+            $("#addHistory").attr("href", `VehicleDrivers/add/${vehicleId}`);
             $("#addHistory").removeClass('visually-hidden');
 
         }

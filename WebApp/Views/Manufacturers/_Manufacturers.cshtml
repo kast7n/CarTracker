@@ -1,0 +1,50 @@
+﻿@model Manufacturer
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="Manufacturers" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+        <input type="hidden" asp-for="ManufacturerId" />
+
+    }
+
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ManufacturerName" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="ManufacturerName" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="ManufacturerName"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Website" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="Website" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Website"></span>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+        <div class="col-6">
+        </div>
+    </div>
+
+</form>

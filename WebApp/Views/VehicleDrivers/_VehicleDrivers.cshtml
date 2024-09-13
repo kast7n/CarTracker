@@ -1,0 +1,69 @@
+﻿
+@model VehicleDriversViewModel
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="VehicleDrivers" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+        
+        <input type="hidden" asp-for="VehicleDriver.AssignmentId" />
+
+        <input type="hidden" asp-for="VehicleDriver.DriverName" />
+    }
+    <input type="hidden" asp-for="VehicleDriver.VehicleId" />
+
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="VehicleDriver.StartDate" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="date" asp-for="VehicleDriver.StartDate" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="VehicleDriver.EndDate" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="date" asp-for="VehicleDriver.EndDate" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="VehicleDriver.DriverId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="VehicleDriver.DriverId" class="form-control">
+                <option>- Please Select -</option>
+                @if (Model.drivers != null && Model.drivers.Count() > 0)
+                {
+                    @foreach (var driver in Model.drivers)
+                    {
+                        <option value="@driver.DriverId">@driver.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+
+
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+        <div class="col-6">
+        </div>
+    </div>
+
+</form>

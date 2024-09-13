@@ -2,7 +2,7 @@
 
 namespace WebApp.Models
 {
-    public static class VehicleDriverRepository
+    public static class VehicleDriversRepository
     {
         // Sample in-memory storage for VehicleDriver assignments
         private static List<VehicleDriver> _vehicleDrivers = new List<VehicleDriver>()
@@ -24,6 +24,7 @@ namespace WebApp.Models
             }
             vehicleDriver.Vehicle = VehiclesRepository.GetVehicleById(vehicleDriver.VehicleId);
             vehicleDriver.Driver = DriversRepository.GetDriverById(vehicleDriver.DriverId);
+            vehicleDriver.DriverName = vehicleDriver.Driver?.Name;
 
             _vehicleDrivers.Add(vehicleDriver);
         }
@@ -50,6 +51,8 @@ namespace WebApp.Models
             var vehicleDriverToUpdate = _vehicleDrivers.FirstOrDefault(vd => vd.AssignmentId == assignmentId);
             if (vehicleDriverToUpdate != null)
             {
+                vehicleDriverToUpdate.DriverId  = updatedVehicleDriver.DriverId;
+                vehicleDriverToUpdate.DriverName = DriversRepository.GetDriverById(updatedVehicleDriver.DriverId)?.Name;
                 vehicleDriverToUpdate.StartDate = updatedVehicleDriver.StartDate;
                 vehicleDriverToUpdate.EndDate = updatedVehicleDriver.EndDate;
             }

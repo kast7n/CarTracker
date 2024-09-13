@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace WebApp.Models
 {
-    public static class VehicleManufacturerRepository
+    public static class ManufacturerRepository
     {
         private static List<Manufacturer> _manufacturers = new List<Manufacturer>();
 
-        static VehicleManufacturerRepository()
+        static ManufacturerRepository()
         {
             // Initialize with some manufacturers for demonstration
             var tesla = new Manufacturer { ManufacturerId = 1, ManufacturerName = "Tesla", Website = "https://www.tesla.com" };

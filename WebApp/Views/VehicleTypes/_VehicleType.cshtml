@@ -1,0 +1,50 @@
+﻿@model VehicleType
+
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="VehicleTypes" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+        <input type="hidden" asp-for="TypeId" />
+
+    }
+
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="TypeName" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="TypeName" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="TypeName"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Description" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="Description" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+        <div class="col-6">
+        </div>
+    </div>
+
+</form>

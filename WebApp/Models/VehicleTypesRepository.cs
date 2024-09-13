@@ -6,9 +6,9 @@ namespace WebApp.Models
     {
         private static List<VehicleType> _vehicleTypes = new List<VehicleType>()
         {
-            new VehicleType { TypeId = 1, TypeName = "Sedan" },
-            new VehicleType { TypeId = 2, TypeName = "SUV" },
-            new VehicleType { TypeId = 3, TypeName = "Truck" }
+            new VehicleType { TypeId = 1, TypeName = "Sedan",Description="Sedan kinda thing" },
+            new VehicleType { TypeId = 2, TypeName = "SUV",Description="SUV kinda thing" },
+            new VehicleType { TypeId = 3, TypeName = "Truck",Description="Truck kinda thing" }
         };
 
         public static void AddVehicleType(VehicleType vehicleType)
@@ -46,6 +46,7 @@ namespace WebApp.Models
             if (vehicleTypeToUpdate != null)
             {
                 vehicleTypeToUpdate.TypeName = vehicleType.TypeName;
+                vehicleTypeToUpdate.Description = vehicleType.Description;
             }
         }
 

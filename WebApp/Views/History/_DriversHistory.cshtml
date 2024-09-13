@@ -27,8 +27,8 @@
                             @Html.Raw("Current owner")
                         }
                     </td>
-                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="edit" asp-route-id="@vehicleDriver.DriverId">Edit</a></td>
-                    <td><a class="btn btn-link" asp-controller="Drivers" asp-action="delete" asp-route-id="@vehicleDriver.DriverId" onclick="return confirmDelete()">Delete</a></td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.AssignmentId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.AssignmentId" onclick="return confirmDelete()">Delete</a></td>
 
                 </tr>
         }

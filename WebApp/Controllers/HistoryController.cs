@@ -24,7 +24,7 @@ namespace WebApp.Controllers
 
         public IActionResult DriversHistoryByVehiclePartial(int vehicleId)
         {
-            var history = VehicleDriverRepository.GetVehicleDriversByVehicleId(vehicleId);
+            var history = VehicleDriversRepository.GetVehicleDriversByVehicleId(vehicleId);
 
             return PartialView("_DriversHistory", history);
         }

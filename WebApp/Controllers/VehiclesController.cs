@@ -20,7 +20,7 @@ namespace WebApp.Controllers
             var vehicleViewModel = new VehiclesViewModel
             {
                 Vehicle = VehiclesRepository.GetVehicleById(id, loadInfo: true) ??new Vehicle(),
-                Manufacturers = VehicleManufacturerRepository.GetManufacturers(),
+                Manufacturers = ManufacturerRepository.GetManufacturers(),
                 VehicleTypes = VehicleTypeRepository.GetVehicleTypes()
             };
             
@@ -43,7 +43,7 @@ namespace WebApp.Controllers
             ViewBag.Action = "add";
             var vehicleViewmodel = new VehiclesViewModel
             {
-                Manufacturers = VehicleManufacturerRepository.GetManufacturers(),
+                Manufacturers = ManufacturerRepository.GetManufacturers(),
                 VehicleTypes = VehicleTypeRepository.GetVehicleTypes()
             };
             return View(vehicleViewmodel);

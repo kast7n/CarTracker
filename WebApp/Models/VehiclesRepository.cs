@@ -37,7 +37,7 @@ namespace WebApp.Models
                         }
                         if (x.ManufacturerId.HasValue)
                         {
-                            x.Manufacturer = VehicleManufacturerRepository.GetManufacturerById(x.ManufacturerId.Value);
+                            x.Manufacturer = ManufacturerRepository.GetManufacturerById(x.ManufacturerId.Value);
                         }
                     });
                 }
@@ -61,7 +61,7 @@ namespace WebApp.Models
                 };
                 if (loadInfo && veh.ManufacturerId.HasValue && veh.TypeId.HasValue)
                 {
-                    veh.Manufacturer = VehicleManufacturerRepository.GetManufacturerById(veh.ManufacturerId.Value);
+                    veh.Manufacturer = ManufacturerRepository.GetManufacturerById(veh.ManufacturerId.Value);
                     veh.Type = VehicleTypeRepository.GetVehicleTypeById(veh.TypeId.Value);
                 }
                 return veh;
@@ -104,7 +104,7 @@ namespace WebApp.Models
             {
                 if (vehicle.Manufacturer != null)
                 {
-                    var manufacturer = VehicleManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
+                    var manufacturer = ManufacturerRepository.GetManufacturerById(vehicle.Manufacturer.ManufacturerId);
              
                 }
 
@@ -119,7 +119,7 @@ namespace WebApp.Models
 
         public static List<Vehicle> GetVehiclesByDriverId(int driverId)
         {
-            var vehicleDrivers = VehicleDriverRepository.GetVehicleDrivers();
+            var vehicleDrivers = VehicleDriversRepository.GetVehicleDrivers();
 
             var vehicleIds = vehicleDrivers
                 .Where(vd => vd.DriverId == driverId)
