@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApp.Models.Validations;
+
 
 namespace WebApp.Models
 {
@@ -17,6 +19,7 @@ namespace WebApp.Models
         public Vehicle? Vehicle { get; set; }
 
         [Required]
+        [VehicleDriver_EnsureProperDates]
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 

@@ -41,7 +41,7 @@ namespace WebApp.Repositories
         {
             if (loadInfo)
             {
-                return db.VehicleDrivers.Include(x => x.Driver).Include(x => x.Vehicle).OrderBy(x => x.VehicleDriverId).ToList();
+                return db.VehicleDrivers.Include(x => x.Driver ).Include(x => x.Vehicle).Where(x => x.VehicleId == vehicleId).OrderBy(x => x.VehicleDriverId).ToList();
             }
             else
             {

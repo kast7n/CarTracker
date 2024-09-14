@@ -48,7 +48,7 @@ namespace WebApp.Controllers
                 vehicleDriverRepository.Update(vehicleDriverViewModel.VehicleDriver.VehicleDriverId, vehicleDriverViewModel.VehicleDriver);
                 return RedirectToAction(nameof(Index), "History");
             }
-
+            vehicleDriverViewModel.Drivers = driverRepository.GetDrivers();
             return View(vehicleDriverViewModel);
         }
 
@@ -58,7 +58,9 @@ namespace WebApp.Controllers
             ViewBag.Action = "add";
             var vehicleDriver = new VehicleDriver
             {
-                VehicleId = id
+                VehicleId = id,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
             };
 
             var vehicleDriverViewModel = new VehicleDriversViewModel
@@ -78,11 +80,17 @@ namespace WebApp.Controllers
             {
                 vehicleDriverViewModel.VehicleDriver.Vehicle = vehicleRepository.GetVehicleById(vehicleDriverViewModel.VehicleDriver.VehicleId);
                 vehicleDriverViewModel.VehicleDriver.Driver = driverRepository.GetDriverById(vehicleDriverViewModel.VehicleDriver.DriverId);
+                
                 vehicleDriverRepository.Insert(vehicleDriverViewModel.VehicleDriver);
                 return RedirectToAction(nameof(Index), "History");
             }
+           
+                vehicleDriverViewModel.Drivers = driverRepository.GetDrivers();
+                ViewBag.Action = "Add";
+                return View(vehicleDriverViewModel);
+            
 
-            return View(vehicleDriverViewModel);
+            
         }
 
         public IActionResult Delete(int id)

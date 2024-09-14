@@ -22,7 +22,7 @@
             <label asp-for="VehicleDriver.StartDate" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="date" asp-for="VehicleDriver.StartDate" class="form-control" />
+            <input type="date" asp-for="VehicleDriver.StartDate" class="form-control" value="@Model.VehicleDriver.StartDate.ToString("yyyy-MM-dd")" />
         </div>
     </div>
 
@@ -31,7 +31,7 @@
             <label asp-for="VehicleDriver.EndDate" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="date" asp-for="VehicleDriver.EndDate" class="form-control" />
+            <input type="date" asp-for="VehicleDriver.EndDate" class="form-control" value="@Model.VehicleDriver.EndDate.ToString("yyyy-MM-dd")" />
         </div>
     </div>
 
