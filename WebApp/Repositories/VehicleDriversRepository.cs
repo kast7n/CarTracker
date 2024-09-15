@@ -34,7 +34,7 @@ namespace WebApp.Repositories
 
         public IEnumerable<VehicleDriver> GetVehicleDriversByDriverId(int driverId)
         {
-            return db.VehicleDrivers.Where(v => v.DriverId == driverId).ToList();
+            return db.VehicleDrivers.Where(v => v.DriverId == driverId).Include(x => x.Vehicle).ToList();
         }
 
         public IEnumerable<VehicleDriver> GetVehicleDriversByVehicleId(int vehicleId, bool loadInfo = false)

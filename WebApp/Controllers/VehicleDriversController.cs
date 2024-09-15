@@ -18,12 +18,7 @@ namespace WebApp.Controllers
             this.driverRepository = driverRepository;
             this.vehicleRepository = vehicleRepository;
         }
-        public IActionResult Index()
-        {
-            var vehicleDrivers = vehicleDriverRepository.GetVehicleDrivers();
-            return View(vehicleDrivers);
-            
-        }
+ 
 
         [HttpGet]
         public IActionResult Edit(int? id)

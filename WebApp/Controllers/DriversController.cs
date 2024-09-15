@@ -8,14 +8,17 @@ namespace WebApp.Controllers
 {
     public class DriversController : Controller
     {
-        private readonly IDriverRepository _driverRepository;
-        public DriversController(IDriverRepository driverRepository)
+        private readonly IDriverRepository driverRepository;
+        private readonly IVehicleDriverRepository vehicleDriverRepository;
+
+        public DriversController(IDriverRepository driverRepository, IVehicleDriverRepository vehicleDriverRepository)
         {
-            _driverRepository = driverRepository;
+            this.driverRepository = driverRepository;
+            this.vehicleDriverRepository = vehicleDriverRepository;
         }
         public IActionResult Index()
         {
-            var drivers = _driverRepository.GetDrivers();
+            var drivers = driverRepository.GetDrivers();
             return View(drivers);
         }
 
@@ -23,7 +26,7 @@ namespace WebApp.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.Action = "edit";
-            var driver = _driverRepository.GetDriverById(id.HasValue? id.Value:0);
+            var driver = driverRepository.GetDriverById(id.HasValue? id.Value:0);
             return View(driver);
 
         }
@@ -33,7 +36,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _driverRepository.Update(driver.DriverId, driver);
+                driverRepository.Update(driver.DriverId, driver);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -52,7 +55,7 @@ namespace WebApp.Controllers
             
             if (ModelState.IsValid)
             {
-                _driverRepository.Insert(driver);
+                driverRepository.Insert(driver);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -61,8 +64,16 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            _driverRepository.Delete(id);
+            driverRepository.Delete(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DriverDetails(int id)//driverId
+        {
+            var driver = driverRepository.GetDriverById(id);
+            if (driver != null)
+                driver.VehicleDrivers = vehicleDriverRepository.GetVehicleDriversByDriverId(id).ToList();
+            return View(driver);
         }
     }
 }

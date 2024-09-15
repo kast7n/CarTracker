@@ -11,7 +11,7 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">License Number</th>
-                <th scope="col">Number Of drivers</th>
+                <th scope="col">View History</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -22,7 +22,7 @@
                 <tr>
                     <td>@driver.Name</td>
                     <td>@driver.LicenseNumber</td>
-                    <td></td>
+                    <td><a class="btn btn-link" asp-controller="drivers" asp-action="driverdetails" asp-route-id="@driver.DriverId">View</a></td>
                     <td><a class="btn btn-link" asp-controller="drivers" asp-action="edit" asp-route-id="@driver.DriverId">Edit</a></td>
                     <td><a class="btn btn-link" asp-controller="drivers" asp-action="delete" asp-route-id="@driver.DriverId" onclick="return confirmDelete()">Delete</a></td>
                 </tr>

@@ -1,0 +1,42 @@
+﻿@model Driver
+@section title {
+    <h3>Vehicle history of @Model.Name </h3>
+}
+
+
+@if (Model.VehicleDrivers != null && Model.VehicleDrivers.Count() > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicleDriver in Model.VehicleDrivers)
+            {
+                <tr>
+                    <td>@vehicleDriver.Vehicle?.VehicleModel</td>
+                    <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
+                    <td>@vehicleDriver.EndDate.ToString("dd/MM/yy")</td>
+                    <td><a class="btn btn-link" asp-controller="vehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.VehicleDriverId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="vehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.VehicleDriverId" onclick="return confirmDelete()">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@section Scripts {
+    <script>
+        function confirmDelete(){
+            return confirm("Are you sure you want to delete this driver?")
+        }
+    </script>
+}
+
