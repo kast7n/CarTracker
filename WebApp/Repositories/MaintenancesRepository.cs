@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
@@ -27,12 +28,12 @@ namespace WebApp.Repositories
 
         public IEnumerable<Maintenance> GetMaintenanceByVehicleId(int vehicleId)
         {
-            return db.Maintenances.Where(v => v.VehicleId == vehicleId).ToList();
+            return db.Maintenances.Include(x => x.Vehicle).Where(v => v.VehicleId == vehicleId).ToList();
         }
 
-        public IEnumerable<Maintenance> GetMaintenanceHistory()
+        public IEnumerable<Maintenance> GetMaintenances()
         {
-            return db.Maintenances.OrderBy(x => x.MaintenanceId).ToList();
+            return db.Maintenances.Include(x => x.Vehicle).OrderBy(x => x.MaintenanceId).ToList();
         }
 
         public void Insert(Maintenance maintenance)
@@ -43,11 +44,13 @@ namespace WebApp.Repositories
 
         public void Update(int maintenanceId, Maintenance updatedMaintenance)
         {
-            if (maintenanceId != updatedMaintenance.VehicleId) return;
+            if (maintenanceId != updatedMaintenance.MaintenanceId) return;
 
             var maint = db.Maintenances.Find(maintenanceId);
             if (maint == null) return;
 
+            maint.Vehicle = updatedMaintenance.Vehicle;
+            maint.VehicleId = updatedMaintenance.VehicleId;
             maint.MaintenanceType = updatedMaintenance.MaintenanceType;
             maint.MaintenanceDate = updatedMaintenance.MaintenanceDate;
             maint.Description = updatedMaintenance.Description;

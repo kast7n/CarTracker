@@ -15,6 +15,7 @@
                 <th scope="col">Color</th>
                 <th scope="col">Type</th>
                 <th scope="col">Manufacturer</th>
+                <th scope="col">Vehicle Drivers</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -29,6 +30,7 @@
                     <td>@vehicle.Color</td>
                     <td>@vehicle.Type?.TypeName</td>
                     <td>@vehicle.Manufacturer?.ManufacturerName</td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="Index" asp-route-vehicleId="@vehicle.VehicleId">Drivers</a></td>
                     <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="edit" asp-route-id="@vehicle.VehicleId">Edit</a></td>
                     <td><a class="btn btn-link" asp-controller="Vehicles" asp-action="delete" asp-route-vehicleid="@vehicle.VehicleId" onclick="return confirmDelete()">Delete</a></td>
                 </tr>
@@ -38,11 +40,5 @@
 }
 <a class="btn btn-primary" asp-controller="vehicles" asp-action="add">Add</a>
 
-@section Scripts {
-    <script>
-        function confirmDelete(){
-            return confirm("Are you sure you want to delete this vehicle?")
-        }
-    </script>
-}
+
 

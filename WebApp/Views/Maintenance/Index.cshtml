@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Maintenance>
+@section title {
+    <h3>Maintenances</h3>
+}
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Vehicle</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var maintenance in Model)
+            {
+                <tr>
+                    <td>@maintenance.MaintenanceType</td>
+                    <td>@maintenance.Description</td>
+                    <td>@maintenance.MaintenanceDate.ToString("dd/MM/yy")</td>
+                    <td>@maintenance.Vehicle?.VehicleModel</td>
+                    <td><a class="btn btn-link" asp-controller="maintenance" asp-action="edit" asp-route-id="@maintenance.MaintenanceId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="maintenance" asp-action="delete" asp-route-id="@maintenance.MaintenanceId" onclick="return confirmDelete()">Delete</a></td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <a class="btn btn-primary" asp-controller="maintenance" asp-action="add">Add</a>
+}

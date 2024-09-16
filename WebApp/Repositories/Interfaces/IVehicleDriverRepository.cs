@@ -5,7 +5,7 @@ namespace WebApp.Repositories.Interfaces
     public interface IVehicleDriverRepository
     {
         void Insert(VehicleDriver vehicleDriver);
-        IEnumerable<VehicleDriver> GetVehicleDrivers();
+        IEnumerable<VehicleDriver> GetVehicleDrivers(bool loadInfo = false);
         VehicleDriver? GetVehicleDriver(int vehicleDriverId);
         IEnumerable<VehicleDriver> GetVehicleDriversByDriverId(int driverId);
         IEnumerable<VehicleDriver> GetVehicleDriversByVehicleId(int vehicleId, bool loadInfo = false);

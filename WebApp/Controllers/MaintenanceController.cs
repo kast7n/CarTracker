@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Repositories;
 using WebApp.Repositories.Interfaces;
+using WebApp.ViewModels;
 
 
 namespace WebApp.Controllers
@@ -15,61 +17,80 @@ namespace WebApp.Controllers
             this.maintenanceRepository = maintenanceRepository;
             this.vehicleRepository = vehicleRepository;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? vehicleId)
         {
-            var maintainenance = maintenanceRepository.GetMaintenanceHistory();
+            if (vehicleId.HasValue)
+            {
+                var main = maintenanceRepository.GetMaintenanceByVehicleId(vehicleId.Value);
+            }
+            var maintainenance = maintenanceRepository.GetMaintenances();
             return View(maintainenance);
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
             ViewBag.Action = "edit";
-            var maintenance = maintenanceRepository.GetMaintenanceById(id.HasValue ? id.Value : 0);
-            return View(maintenance);
+            var maintenance = maintenanceRepository.GetMaintenanceById(id);
+            if(maintenance != null)
+            {
+                var maintenanceViewModel = new MaintenanceViewModel
+                {
+                    Maintenance = maintenance,
+                    Vehicles = vehicleRepository.GetVehicles()
+                };
+                return View(maintenanceViewModel);
+            }
 
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public IActionResult Edit(Maintenance maintenance)
+        public IActionResult Edit(MaintenanceViewModel maintenanceViewModel)
         {
             if (ModelState.IsValid)
             {
-                maintenanceRepository.Update(maintenance.MaintenanceId, maintenance);
-                return RedirectToAction(nameof(Index), "History");
+                maintenanceViewModel.Maintenance.Vehicle = vehicleRepository.GetVehicleById(maintenanceViewModel.Maintenance.VehicleId);
+                maintenanceRepository.Update(maintenanceViewModel.Maintenance.MaintenanceId, maintenanceViewModel.Maintenance);
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(maintenance);
+            return View(maintenanceViewModel);
         }
 
         [HttpGet]
-        public IActionResult Add(int id) // VehicleId passed so user doesn't select a vehicle in the form, vehicle is selected when he chooses which vehicle to add the maintenance to
+        public IActionResult Add()
         {
             ViewBag.Action = "add";
             var maintenance = new Maintenance
             {
-                VehicleId = id
+                MaintenanceDate = DateTime.Now
             };
-            return View(maintenance);
+                var maintenanceViewModel = new MaintenanceViewModel
+                {
+                    Maintenance = maintenance,
+                    Vehicles = vehicleRepository.GetVehicles()
+                };
+                return View(maintenanceViewModel);
         }
         [HttpPost]
-        public IActionResult Add(Maintenance maintenance)
+        public IActionResult Add(MaintenanceViewModel maintenanceViewModel)
         {
 
             if (ModelState.IsValid)
             {
-                maintenance.Vehicle = vehicleRepository.GetVehicleById(maintenance.VehicleId);
-                maintenanceRepository.Insert(maintenance);
-                return RedirectToAction(nameof(Index), "History");
+                
+                maintenanceRepository.Insert(maintenanceViewModel.Maintenance);
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(maintenance);
+            return View(maintenanceViewModel);
         }
 
         public IActionResult Delete(int id)
         {
             maintenanceRepository.Delete(id);
-            return RedirectToAction(nameof(Index), "History");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

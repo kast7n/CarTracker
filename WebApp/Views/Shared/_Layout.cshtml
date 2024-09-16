@@ -34,7 +34,13 @@
                             <a class="nav-link active" asp-controller="vehicletypes" asp-action="index">Vehicle Types</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Manufacturers"index">Manufacturers</a>
+                            <a class="nav-link active" asp-controller="Manufacturers" asp-action="index" >Manufacturers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="VehicleDrivers" asp-action="index">Vehicle Drivers</a>
+                        </li
+                              <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Maintenance" asp-action="index">Maintenance</a>
                         </li>
                
 
@@ -54,7 +60,11 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this field?")
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

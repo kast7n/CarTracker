@@ -18,6 +18,18 @@ namespace WebApp.Controllers
             this.driverRepository = driverRepository;
             this.vehicleRepository = vehicleRepository;
         }
+
+        public IActionResult Index(int? vehicleId)
+        {
+            if(vehicleId.HasValue)
+            {
+                List<VehicleDriver> vd = vehicleDriverRepository.GetVehicleDriversByVehicleId(vehicleId.Value,true).ToList();
+                return View(vd);
+            }
+
+            var vehicleDrivers = vehicleDriverRepository.GetVehicleDrivers(true);
+            return View(vehicleDrivers);
+        }
  
 
         [HttpGet]
@@ -27,7 +39,8 @@ namespace WebApp.Controllers
             var vehicleDriverViewModel = new VehicleDriversViewModel
             {
                 VehicleDriver = vehicleDriverRepository.GetVehicleDriver(id.HasValue ? id.Value : 0) ?? new VehicleDriver(),
-                Drivers = driverRepository.GetDrivers()
+                Drivers = driverRepository.GetDrivers(),
+                Vehicles = vehicleRepository.GetVehicles()
             };
             return View(vehicleDriverViewModel);
 
@@ -41,19 +54,20 @@ namespace WebApp.Controllers
                 vehicleDriverViewModel.VehicleDriver.Vehicle = vehicleRepository.GetVehicleById(vehicleDriverViewModel.VehicleDriver.VehicleId);
                 vehicleDriverViewModel.VehicleDriver.Driver = driverRepository.GetDriverById(vehicleDriverViewModel.VehicleDriver.DriverId);
                 vehicleDriverRepository.Update(vehicleDriverViewModel.VehicleDriver.VehicleDriverId, vehicleDriverViewModel.VehicleDriver);
-                return RedirectToAction(nameof(Index), "History");
+                return RedirectToAction(nameof(Index));
             }
             vehicleDriverViewModel.Drivers = driverRepository.GetDrivers();
+            vehicleDriverViewModel.Vehicles = vehicleRepository.GetVehicles();
             return View(vehicleDriverViewModel);
         }
 
         [HttpGet]
-        public IActionResult Add(int id) // VehicleId passed so user doesn't select a vehicle in the form, vehicle is selected when he chooses which vehicle to add the vehicleDriver to
+        public IActionResult Add()
         {
             ViewBag.Action = "add";
             var vehicleDriver = new VehicleDriver
             {
-                VehicleId = id,
+        
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now
             };
@@ -61,7 +75,8 @@ namespace WebApp.Controllers
             var vehicleDriverViewModel = new VehicleDriversViewModel
             {
                 VehicleDriver = vehicleDriver,
-                Drivers = driverRepository.GetDrivers()
+                Drivers = driverRepository.GetDrivers(),
+                Vehicles = vehicleRepository.GetVehicles()
             };
 
 
@@ -77,10 +92,11 @@ namespace WebApp.Controllers
                 vehicleDriverViewModel.VehicleDriver.Driver = driverRepository.GetDriverById(vehicleDriverViewModel.VehicleDriver.DriverId);
                 
                 vehicleDriverRepository.Insert(vehicleDriverViewModel.VehicleDriver);
-                return RedirectToAction(nameof(Index), "History");
+                return RedirectToAction(nameof(Index));
             }
            
                 vehicleDriverViewModel.Drivers = driverRepository.GetDrivers();
+                vehicleDriverViewModel.Vehicles = vehicleRepository.GetVehicles();
                 ViewBag.Action = "Add";
                 return View(vehicleDriverViewModel);
             
@@ -91,7 +107,7 @@ namespace WebApp.Controllers
         public IActionResult Delete(int id)
         {
             vehicleDriverRepository.Delete(id);
-            return RedirectToAction(nameof(Index), "History");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

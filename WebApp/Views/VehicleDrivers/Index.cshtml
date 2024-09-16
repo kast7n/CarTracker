@@ -1,0 +1,40 @@
+﻿@model IEnumerable<VehicleDriver>
+@section title {
+    <h3>Vehicle drivers</h3>
+}
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>License</th>
+                <th>Model</th>
+                <th>Plate</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicleDriver in Model)
+            {
+                <tr>
+                    <td>@vehicleDriver.Driver?.Name</td>
+                    <td>@vehicleDriver.Driver?.LicenseNumber</td>
+                    <td>@vehicleDriver.Vehicle?.VehicleModel</td>
+                    <td>@vehicleDriver.Vehicle?.PlateNumber</td>
+                    <td>@vehicleDriver.StartDate.ToString("dd/MM/yy")</td>
+                    <td>@vehicleDriver.EndDate.ToString("dd/MM/yy")</td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="edit" asp-route-id="@vehicleDriver.VehicleDriverId">Edit</a></td>
+                    <td><a class="btn btn-link" asp-controller="VehicleDrivers" asp-action="delete" asp-route-id="@vehicleDriver.VehicleDriverId" onclick="return confirmDelete()">Delete</a></td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <a  class="btn btn-primary" asp-controller="VehicleDrivers" asp-action="add">Add</a>
+}

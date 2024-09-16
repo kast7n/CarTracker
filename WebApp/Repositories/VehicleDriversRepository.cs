@@ -27,8 +27,12 @@ namespace WebApp.Repositories
             return db.VehicleDrivers.FirstOrDefault(x => x.VehicleDriverId == vehicleDriverId);
         }
 
-        public IEnumerable<VehicleDriver> GetVehicleDrivers()
+        public IEnumerable<VehicleDriver> GetVehicleDrivers(bool loadInfo = false)
         {
+            if (loadInfo)
+            {
+                return db.VehicleDrivers.Include(x => x.Vehicle ).Include(x => x.Driver).OrderBy(x => x.VehicleDriverId).ToList();
+            }
             return db.VehicleDrivers.OrderBy(x => x.VehicleDriverId).ToList();
         }
 
@@ -62,6 +66,9 @@ namespace WebApp.Repositories
             var vd = db.VehicleDrivers.Find(vehicleDriverId);
             if (vd == null) return;
 
+
+            vd.Vehicle = updatedVehicleDriver.Vehicle;
+            vd.VehicleId = updatedVehicleDriver.VehicleId;
             vd.DriverId = updatedVehicleDriver.DriverId;
             vd.StartDate = updatedVehicleDriver.StartDate;
             vd.EndDate = updatedVehicleDriver.EndDate;
