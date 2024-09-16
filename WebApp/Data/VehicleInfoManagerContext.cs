@@ -12,7 +12,7 @@ namespace WebApp.Data
         public DbSet<VehicleDriver> VehicleDrivers { get; set; }
         public DbSet<Maintenance> Maintenances { get; set; }
 
-        public VehicleInfoManagerContext(DbContextOptions options) : base(options)
+        public VehicleInfoManagerContext(DbContextOptions<VehicleInfoManagerContext> options) : base(options)
         {
 
         }

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Repositories.Interfaces;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class HistoryController : Controller
     {
         private readonly IVehicleRepository vehicleRepository;

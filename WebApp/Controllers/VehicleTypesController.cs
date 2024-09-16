@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class VehicleTypesController : Controller
     {
         private readonly IVehicleTypeRepository vehicleTypeRepository;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories;
 using WebApp.Repositories.Interfaces;
@@ -7,6 +8,7 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class MaintenanceController : Controller
     {
         private readonly IMaintenanceRepository maintenanceRepository;
