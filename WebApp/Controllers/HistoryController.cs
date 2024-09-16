@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
+using WebApp.Repositories;
 using WebApp.Repositories.Interfaces;
 using WebApp.ViewModels;
 
@@ -9,21 +11,39 @@ namespace WebApp.Controllers
     public class HistoryController : Controller
     {
         private readonly IVehicleRepository vehicleRepository;
+        private readonly IVehicleTypeRepository vehicleTypeRepository;
         private readonly IMaintenanceRepository maintenanceRepository;
         private readonly IVehicleDriverRepository vehicleDriverRepository;
+        private readonly IManufacturerRepository manufacturerRepository;
 
-        public HistoryController(IVehicleRepository vehicleRepository, IMaintenanceRepository maintenanceRepository, IVehicleDriverRepository vehicleDriverRepository)
+        public HistoryController(IVehicleRepository vehicleRepository,IVehicleTypeRepository vehicleTypeRepository, IMaintenanceRepository maintenanceRepository, IVehicleDriverRepository vehicleDriverRepository,IManufacturerRepository manufacturerRepository)
         {
             this.vehicleRepository = vehicleRepository;
+            this.vehicleTypeRepository = vehicleTypeRepository;
             this.maintenanceRepository = maintenanceRepository;
             this.vehicleDriverRepository = vehicleDriverRepository;
+            this.manufacturerRepository = manufacturerRepository;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? typeId, int? manufacturerId)
         {
             var historyViewModel = new HistoryViewModel
             {
-                Vehicles = vehicleRepository.GetVehicles()
+                Vehicles = vehicleRepository.GetVehicles(),
+                VehicleTypes = vehicleTypeRepository.GetVehicleTypes(),
+                Manufacturers = manufacturerRepository.GetManufacturers()
             };
+
+            if (typeId.HasValue)
+            {
+                historyViewModel.Vehicles = historyViewModel.Vehicles.Where(v => v.TypeId == typeId.Value);
+                historyViewModel.SelectedTypeId = typeId;
+            }
+
+            if (manufacturerId.HasValue)
+            {
+                historyViewModel.Vehicles = historyViewModel.Vehicles.Where(v => v.ManufacturerId == manufacturerId.Value);
+                historyViewModel.SelectedManufacturerId = manufacturerId;
+            }
             return View(historyViewModel);
         }
 

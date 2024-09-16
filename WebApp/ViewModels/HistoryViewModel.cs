@@ -9,5 +9,8 @@ namespace WebApp.ViewModels
         public IEnumerable<Manufacturer> Manufacturers { get; set; } = new List<Manufacturer>();
         public IEnumerable<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
+        public int? SelectedTypeId { get; set; }
+        public int? SelectedManufacturerId { get; set; }
+
     }
 }

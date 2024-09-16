@@ -11,6 +11,38 @@
 <div class="row">
 
     <div class="col-4">
+        <form method="get">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="typeSelect">Vehicle Type</label>
+            <select id="typeSelect" name="typeId" class="form-control">
+                <option value="">All</option>
+                @foreach (var type in Model.VehicleTypes)
+                {
+                    <option value="@type.TypeId" >
+                        @type.TypeName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="manufacturerSelect">Manufacturer</label>
+            <select id="manufacturerSelect" name="manufacturerId" class="form-control">
+                <option value="">All</option>
+                @foreach (var manufacturer in Model.Manufacturers)
+                {
+                    <option value="@manufacturer.ManufacturerId">
+                        @manufacturer.ManufacturerName
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Filter</button>
+</form>
+
         <div class="text-danger" asp-validation-summary="All"></div>
         <select id="SelectedVehicleId" asp-for="SelectedVehicleId" class="form-control">
             <option>- Please Select -</option>
@@ -18,7 +50,7 @@
             {
                 @foreach (var vehicle in Model.Vehicles)
                 {
-                    <option value="@vehicle.VehicleId">@vehicle.PlateNumber @vehicle.VehicleModel</option>
+                    <option value="@vehicle.VehicleId">Model: @vehicle.VehicleModel Plate: @vehicle.PlateNumber</option>
                 }
             }
         </select>
